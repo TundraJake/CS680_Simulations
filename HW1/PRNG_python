@@ -1,0 +1,57 @@
+# Jacob McKenna
+# CS680 Advanced Discrete Event Simulations
+# Assignment 1
+# This assignment requires the implementation of the Linear 
+# Congruential Method and five different test variable sets.
+# The Kolmogorov Smirnov, mean, variance, and auto correlation tests. 
+# These will also be applied to at least three different PRNGs. 
+
+import random
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy import stats
+
+####################################################################
+####################################################################
+############## Test for Python's Stand library PRNG ################
+####################################################################
+####################################################################
+
+# The seeder value was changed each time to 
+# produce different values and graphs.
+# i.e. 1, 2, 3, 4, and 5 
+
+seeder = 5
+random.seed(seeder) 
+
+list = []
+for _ in range(10000):
+	x = random.randrange(100000000000)
+	list.append(x/100000000000)
+
+mean = "The Mean = " + str('%.4f' % np.mean(list))
+variance = "The Variance = " + str('%.5f' % np.var(list))
+
+first = list[0]
+cycle = "m"
+count = 0
+for i in list[1:]:
+    count = count + 1
+    if i == first:
+        cycle = count
+        break
+
+result = stats.kstest(list, 'norm')
+
+plt.hist(list)
+plt.title("Python PRNG Spread" + "Cycle = " + str(cycle) + "\n")
+plt.xlabel("Value\n\n" + mean + "\n" + variance + "\n" + str(result) + "\n\nFigure " + str(seeder) + ": Python PRGN")
+plt.ylabel("Frequency")
+plt.savefig('PRNG_Python' + str(seeder) + '.png', bbox_inches='tight')
+plt.show()
+
+plt.plot(acf_coeffs)
+plt.ylim([-0.2,0.2])
+plt.title("LCG Spread Autocorrelation for LCG " + str(histNum))
+plt.xlabel("Value")
+plt.savefig("AutocorrelationPythonPRNG" + str(histNum) + ".png")

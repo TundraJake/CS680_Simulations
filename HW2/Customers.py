@@ -10,7 +10,7 @@ class Customers():
 
 	def __init__(self, numCustomers, mint, maxt):
 		self.arrivalTime = 0
-		self.clockTimes = []
+		self.clockTimes = [] # FEL list for now, no proper FEL is in place yet.
 		self.custArrivals = numCustomers
 		self.custArrMin = mint
 		self.custArrMax = maxt
@@ -21,8 +21,12 @@ class Customers():
 			clock += time 
 			self.clockTimes.append(clock)
 
+
 	### Debug Functions ###
 
 	def printTimes(self):
 		print(self.clockTimes)
+
+	def getLastCustomerTime(self):
+		return self.clockTimes[-1]
 

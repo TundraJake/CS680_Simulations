@@ -1,10 +1,17 @@
 import time # Used for the clock (seconds).
 import Server
+import Customers
+from collections import deque
 
 class Simulation():
 
-    def __init__(self):
+    def __init__(self, s1m, s1M, s2m, s2M, numCust, cAm, cAM):
         self.setBusy = False
+        self.server1 = Server.Server(s1m, s1M)
+        self.server2 = Server.Server(s2m, s2M)
+        self.custs = Customers.Customers(numCust, cAm, cAM)
+        self.lastCustomerTime = self.custs.getLastCustomerTime()
+        print(self.lastCustomerTime)
 
     def startSim(self, seconds):
 
@@ -21,8 +28,12 @@ class Simulation():
 
         while elapsed < seconds:
             elapsed = time.time() - start
-            print("loop cycle time: %f, seconds count: %02d" % (time.clock() , elapsed)) 
+            # print("loop cycle time: %f, seconds count: %02d" % (time.clock() , elapsed)) 
             time.sleep(.1)  
+
+
+
+
             # You were sleeping in your original code, so I've stuck this in here...
             # You'll notice that the process time is almost nothing.
             # This is because we are spending most of the time sleeping,
@@ -33,6 +44,3 @@ class Simulation():
             # ultimately be a lot more. 
             # On my machine, it ran the loop 2605326 times in 20 seconds.
             # Obviously it won't run it more than 20 times if you use time.sleep(1)
-
-s = Simulation()
-s.startSim(20)
