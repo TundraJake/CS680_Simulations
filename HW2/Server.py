@@ -27,11 +27,11 @@ class Server():
 	def serveTheFool(self):
 		if (self.currentServeTime != 0):
 			self.currentServeTime -= 1
-			print("Stille working!!!")
+			print("Still working!!!")
 
 		elif (self.currentServeTime == 0 and self.busy == True): 
 			self.setBusy() # Not busy anymore. 
-			print("He finished")
+			print("He finished!")
 
 
 	def setBusy(self):
