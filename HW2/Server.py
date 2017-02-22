@@ -10,6 +10,7 @@ class Server():
 
 	def __init__(self, mint, maxt):
 		self.averageServeTime = 0
+		self.customersServed = 0
 		self.busy = False
 		self.minTime = mint
 		self.maxTime = maxt
@@ -24,7 +25,7 @@ class Server():
 		else:
 			print("Dude is busy")
 
-	def serveTheFool(self):
+	def serveTheCustomer(self):
 		if (self.currentServeTime != 0):
 			self.currentServeTime -= 1
 			print("Still working!!!")
@@ -34,8 +35,12 @@ class Server():
 			print("He finished!")
 
 
-	def setBusy(self):
+	def toggleBusy(self):
 		self.busy = not self.busy
+
+	def getAverageServeTime(self):
+		return self.averageServeTime
+
 
 
 	### Debug Function ### 

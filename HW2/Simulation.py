@@ -8,10 +8,13 @@ class Simulation():
     def __init__(self, s1m, s1M, s2m, s2M, numCust, cAm, cAM):
         self.setBusy = False
         self.server1 = Server.Server(s1m, s1M)
+        self.server1ServerTimes = []
         self.server2 = Server.Server(s2m, s2M)
+        self.server2ServerTimes = []
+        self.averageWaitTime = 0
         self.custs = Customers.Customers(numCust, cAm, cAM)
         self.lastCustomerTime = self.custs.getLastCustomerTime()
-        print(self.lastCustomerTime)
+        
 
     def startSim(self, seconds):
 
