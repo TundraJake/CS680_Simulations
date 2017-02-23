@@ -41,7 +41,8 @@ class Simulation():
         # subtracting the first value of time.clock() from anything.
         # Read the documentation for more details.
 
-        
+        print(self.custs.getAllCustomers())
+
         myIter = 0 
         # firstValue = self.custs.getCurrentCustomer(0)
         # print("%d is the first values" % (firstValue))
@@ -53,8 +54,7 @@ class Simulation():
             self.simClock += 1
 
             if self.simClock == self.custs.getCurrentCustomer(myIter):
-                print(self.simClock)
-                print(self.custs.getCurrentCustomer(myIter))
+                print("assign customer to server now")
                 myIter += 1
 
             else:
@@ -62,7 +62,7 @@ class Simulation():
 
 
 
-            time.sleep(1)  
+            time.sleep(.5)  
 
 
 

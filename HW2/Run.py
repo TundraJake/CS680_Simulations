@@ -20,10 +20,9 @@ Customer and Sever Time Set One
 
 sim1 = Simulation.Simulation(1,5, 2,4, 100, 1,4)
 
-sim1.toggleServerBusyState()
 sim1.startSim(20)
 
-c = Customers.Customers(100,3,5)
+
 
 
 # server1 = Server.Server(1,5)

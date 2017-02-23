@@ -29,6 +29,9 @@ class Customers():
 	def printTimes(self):
 		print(self.clockTimes)
 
+	def getAllCustomers(self):
+		return self.clockTimes
+
 	def getCurrentCustomer(self, time):
 		return self.clockTimes[time]
 
