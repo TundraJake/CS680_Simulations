@@ -39,6 +39,8 @@ class Server():
 		return self.busy
 
 	def toggleBusy(self):
+		print("toggle server")
+		print(self.busy)
 		self.busy = not self.busy
 
 	def getAverageServeTime(self):

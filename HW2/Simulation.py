@@ -1,6 +1,8 @@
 import time # Used for the clock (seconds).
 import Server
 import Customers
+import random as rd
+
 from collections import deque
 
 ### Clock code from following link, 
@@ -11,6 +13,11 @@ class Simulation():
     def __init__(self, s1m, s1M, s2m, s2M, numCust, cAm, cAM):
 
         self.simClock = 0
+        # FEL list for now, no proper FEL is in place yet.
+        # Represents customers. I'll use a class to represent this later.
+        
+        self.clockTimes = [] 
+
         self.server1 = Server.Server(s1m, s1M)
         self.server1ServerTimes = []
 
@@ -18,15 +25,20 @@ class Simulation():
         self.server2ServerTimes = []
 
         self.averageWaitTime = 0
+        self.queue = deque()
 
-        self.custs = Customers.Customers(numCust, cAm, cAM)
+        for _ in range(numCust):
+            time = rd.randint(cAm, cAM)
+            clock += time 
+            self.clockTimes.append(clock)
+
         self.lastCustomerTime = self.custs.getLastCustomerTime()
 
-    def toggleServerBusyState(self):
-        if self.server1.getBusyState():
-            print("The server is now busy!")
-        else:
-            print("Why we pay you") 
+    def toggleServer1BusyState(self):
+        self.server1.toggleBusy()
+
+    def toggleServer2BusyState(self):
+        self.server2.toggleBusy()
 
 
     def startSim(self, seconds):
@@ -41,7 +53,6 @@ class Simulation():
         # subtracting the first value of time.clock() from anything.
         # Read the documentation for more details.
 
-        print(self.custs.getAllCustomers())
 
         myIter = 0 
         # firstValue = self.custs.getCurrentCustomer(0)
@@ -54,11 +65,19 @@ class Simulation():
             self.simClock += 1
 
             if self.simClock == self.custs.getCurrentCustomer(myIter):
-                print("assign customer to server now")
-                myIter += 1
+                if not self.server1.getBusyState():
+                    self.toggleServer1BusyState()
+                    myIter += 1
+
+                elif not self.server2.getBusyState():
+                    self.toggleServer2BusyState()
+                    myIter += 1
+
+                else:
+                    print("Both are busy")
 
             else:
-                print("It is not working")
+                print("No customer to serve or both servers are busy.")
 
 
 

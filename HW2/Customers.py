@@ -4,6 +4,10 @@ UAF CS 680 Discrete Event SImulation
 Customer Class
 '''
 
+'''
+Need refactor this into a better class, simulation is simulating
+the customers. 
+'''
 import random as rd
 
 class Customers():

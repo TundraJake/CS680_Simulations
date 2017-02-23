@@ -6,7 +6,6 @@ Simulation Class and File
 
 import Server
 import Simulation
-import Customers
 
 '''
 Customer and Sever Time Set One
