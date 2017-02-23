@@ -77,18 +77,21 @@ class Simulation():
             self.simClock += 1
             if self.simClock == self.arrivalTimes[myIter]:
 
-                queue.append(self.arrivalTimes[myIter])
+                # Customer gets added to the queue. 
+                self.queue.append(self.arrivalTimes[myIter])
 
                 # print(self.server1.getBusyState())
-                if not self.server1.getBusyState():
+                if not self.server1.getBusyState() and len(self.queue) != 0:
+                    self.queue.popleft()
                     self.beginServing1()
                     self.serve1()
-                    print("Now serving next customer at %d." % (self.arrivalTimes[myIter]))
+                    print("Now serving next customer at time %d." % (self.arrivalTimes[myIter]))
                     myIter += 1
                     continue
 
                 else:
-
+                    #print(self.queue)
+                    print()
 
             else:
                 print("No customer to serve or both servers are busy.")

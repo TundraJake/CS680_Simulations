@@ -22,8 +22,6 @@ sim1 = Simulation.Simulation(1,5, 2,4, 100, 1,4)
 sim1.startSim(20)
 
 
-
-
 # server1 = Server.Server(1,5)
 
 # server1.startService()

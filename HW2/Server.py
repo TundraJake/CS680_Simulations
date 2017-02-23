@@ -17,12 +17,11 @@ class Server():
 		self.serverTimes = []		
 
 	def startService(self):
-		# print(not self.busy)
 		if (self.currentServeTime == 0 and not self.busy):
 			self.toggleBusy() # Serving
 			self.currentServeTime = rand.randint(self.minTime, self.maxTime)
 			self.serverTimes.append(self.currentServeTime)
-
+			print(self.currentServeTime)
 		else:
 			print("Dude is busy")
 
