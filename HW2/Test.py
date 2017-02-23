@@ -36,7 +36,3 @@
 # 	print('It is a key!')
 
 
-mybool = True;
-
-if mybool:
-	print("you got it")
