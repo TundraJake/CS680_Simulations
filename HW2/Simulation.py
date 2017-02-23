@@ -3,18 +3,29 @@ import Server
 import Customers
 from collections import deque
 
+### Clock code from following link, 
+### http://codereview.stackexchange.com/questions/26534/is-there-a-better-way-to-count-seconds-in-python
+###
 class Simulation():
 
     def __init__(self, s1m, s1M, s2m, s2M, numCust, cAm, cAM):
-        self.setBusy = False
+
         self.server1 = Server.Server(s1m, s1M)
         self.server1ServerTimes = []
+
         self.server2 = Server.Server(s2m, s2M)
         self.server2ServerTimes = []
+
         self.averageWaitTime = 0
+
         self.custs = Customers.Customers(numCust, cAm, cAM)
         self.lastCustomerTime = self.custs.getLastCustomerTime()
-        
+
+    def toggleServerBusyState(self):
+        if self.server1.getBusyState():
+            print("The server is now busy!")
+        else:
+            print("Why we pay you")        
 
     def startSim(self, seconds):
 
@@ -31,8 +42,8 @@ class Simulation():
 
         while elapsed < seconds:
             elapsed = time.time() - start
-            # print("loop cycle time: %f, seconds count: %02d" % (time.clock() , elapsed)) 
-            time.sleep(.1)  
+            #print("loop cycle time: %f, seconds count: %02d" % (time.clock() , elapsed)) 
+            time.sleep(.01)  
 
 
 

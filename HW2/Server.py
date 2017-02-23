@@ -17,8 +17,8 @@ class Server():
 		self.currentServeTime = 0 		
 
 	def startService(self):
-		if (self.currentServeTime == 0 and self.busy == False):
-			self.setBusy() # Serving
+		if (self.currentServeTime == 0 and not self.busy):
+			self.toggleBusy() # Serving
 			self.currentServeTime = rand.randint(self.minTime, self.maxTime)
 			print(self.currentServeTime)
 
@@ -28,12 +28,15 @@ class Server():
 	def serveTheCustomer(self):
 		if (self.currentServeTime != 0):
 			self.currentServeTime -= 1
-			print("Still working!!!")
+			#print("Still working!!!")
 
-		elif (self.currentServeTime == 0 and self.busy == True): 
-			self.setBusy() # Not busy anymore. 
-			print("He finished!")
+		elif (self.currentServeTime == 0): 
+			self.toggleBusy() # Not busy anymore. 
+			#print("He finished!")
 
+
+	def getBusyState(self):
+		return self.busy
 
 	def toggleBusy(self):
 		self.busy = not self.busy

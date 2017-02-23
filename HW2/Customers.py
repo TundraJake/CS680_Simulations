@@ -15,6 +15,7 @@ class Customers():
 		self.custArrMin = mint
 		self.custArrMax = maxt
 
+		### Generates the customer arrival times.
 		clock = 0 
 		for _ in range(self.custArrivals):
 			time = rd.randint(self.custArrMin, self.custArrMax)
