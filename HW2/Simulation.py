@@ -1,3 +1,8 @@
+'''
+Jacob McKenna
+UAF CS 680 Discrete Event SImulation 
+Server Class 
+'''
 import time # Used for the clock (seconds).
 import Server
 import Customers
@@ -13,10 +18,10 @@ class Simulation():
     def __init__(self, s1m, s1M, s2m, s2M, numCust, cAm, cAM):
 
         self.simClock = 0
+
         # FEL list for now, no proper FEL is in place yet.
         # Represents customers. I'll use a class to represent this later.
-        
-        self.clockTimes = [] 
+        self.arrivalTimes = [] 
 
         self.server1 = Server.Server(s1m, s1M)
         self.server1ServerTimes = []
@@ -27,18 +32,25 @@ class Simulation():
         self.averageWaitTime = 0
         self.queue = deque()
 
+        clock = 0
         for _ in range(numCust):
             time = rd.randint(cAm, cAM)
             clock += time 
-            self.clockTimes.append(clock)
+            self.arrivalTimes.append(clock)
 
-        self.lastCustomerTime = self.custs.getLastCustomerTime()
+        self.lastCustomerTime = self.arrivalTimes[-1]
 
-    def toggleServer1BusyState(self):
-        self.server1.toggleBusy()
+    def beginServing1(self):
+        self.server1.startService()
 
-    def toggleServer2BusyState(self):
-        self.server2.toggleBusy()
+    def beginServing2(self):
+        self.server2.startService()
+
+    def serve1(self):
+        self.server1.serveTheCustomer()
+
+    def serve2(self):
+        self.server2.serveTheCustomer()
 
 
     def startSim(self, seconds):
@@ -53,6 +65,7 @@ class Simulation():
         # subtracting the first value of time.clock() from anything.
         # Read the documentation for more details.
 
+        print(self.arrivalTimes)
 
         myIter = 0 
         # firstValue = self.custs.getCurrentCustomer(0)
@@ -61,27 +74,27 @@ class Simulation():
             # self.simClock = time.time() - start
             # print("loop cycle time: %f, seconds count: %02d" % (time.clock() , self.simClock)) 
 
-
             self.simClock += 1
+            if self.simClock == self.arrivalTimes[myIter]:
 
-            if self.simClock == self.custs.getCurrentCustomer(myIter):
+                queue.append(self.arrivalTimes[myIter])
+
+                # print(self.server1.getBusyState())
                 if not self.server1.getBusyState():
-                    self.toggleServer1BusyState()
+                    self.beginServing1()
+                    self.serve1()
+                    print("Now serving next customer at %d." % (self.arrivalTimes[myIter]))
                     myIter += 1
-
-                elif not self.server2.getBusyState():
-                    self.toggleServer2BusyState()
-                    myIter += 1
+                    continue
 
                 else:
-                    print("Both are busy")
+
 
             else:
                 print("No customer to serve or both servers are busy.")
+                self.serve1()
 
-
-
-            time.sleep(.5)  
+            time.sleep(.25)  
 
 
 
