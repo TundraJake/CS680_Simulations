@@ -10,6 +10,7 @@ class Simulation():
 
     def __init__(self, s1m, s1M, s2m, s2M, numCust, cAm, cAM):
 
+        self.simClock = 0
         self.server1 = Server.Server(s1m, s1M)
         self.server1ServerTimes = []
 
@@ -25,7 +26,8 @@ class Simulation():
         if self.server1.getBusyState():
             print("The server is now busy!")
         else:
-            print("Why we pay you")        
+            print("Why we pay you") 
+
 
     def startSim(self, seconds):
 
@@ -38,12 +40,29 @@ class Simulation():
         # process time. There is no point assigning it to a variable, or
         # subtracting the first value of time.clock() from anything.
         # Read the documentation for more details.
-        elapsed = 0
 
-        while elapsed < seconds:
-            elapsed = time.time() - start
-            #print("loop cycle time: %f, seconds count: %02d" % (time.clock() , elapsed)) 
-            time.sleep(.01)  
+        
+        myIter = 0 
+        # firstValue = self.custs.getCurrentCustomer(0)
+        # print("%d is the first values" % (firstValue))
+        while self.simClock < seconds:
+            # self.simClock = time.time() - start
+            # print("loop cycle time: %f, seconds count: %02d" % (time.clock() , self.simClock)) 
+
+
+            self.simClock += 1
+
+            if self.simClock == self.custs.getCurrentCustomer(myIter):
+                print(self.simClock)
+                print(self.custs.getCurrentCustomer(myIter))
+                myIter += 1
+
+            else:
+                print("It is not working")
+
+
+
+            time.sleep(1)  
 
 
 
