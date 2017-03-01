@@ -21,33 +21,36 @@ class Server():
 			self.toggleBusy() # Serving
 			self.currentServeTime = rand.randint(self.minTime, self.maxTime)
 			self.serverTimes.append(self.currentServeTime)
-			print(self.currentServeTime)
-		else:
-			print("Dude is busy")
+			# print("This is the current server time %d." %(self.currentServeTime))
+		# else:
+		# 	print("Service already started.")
 
 	def serveTheCustomer(self):
 		if (self.currentServeTime != 0):
 			self.currentServeTime -= 1
-			#print("Still working!!!")
+			# print("Server is busy.")
 
 		elif (self.currentServeTime == 0 and self.busy): 
-			print("Not busy any more")
-			print(self.serverTimes)
-			self.toggleBusy() # Not busy anymore. 
-			#print("He finished!")
+			# print("Finished Serving, not busy anymore.")
+			self.toggleBusy() # Not busy anymore.
+
+		# else:
+			# print("Currently not busy.")
+
+
+	def printServerTimes(self): ### Debug Function ###
+		print(self.serverTimes)
+
+	def getServerTimes(self):
+		return self.serverTimes
 
 
 	def getBusyState(self):
 		return self.busy
 
 	def toggleBusy(self):
-		# print("toggle server")
-		# print(self.busy)
 		self.busy = not self.busy
 
 	def getAverageServeTime(self):
 		return self.averageServeTime
 
-
-
-	### Debug Function ### 

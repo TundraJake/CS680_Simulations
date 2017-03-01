@@ -15,6 +15,7 @@ class Customers():
 	def __init__(self, numCustomers, mint, maxt):
 		self.arrivalTime = 0
 		self.clockTimes = [] # FEL list for now, no proper FEL is in place yet.
+		self.waitTimeForEachCustomer = []
 		self.numCustomers = numCustomers
 		self.custArrMin = mint
 		self.custArrMax = maxt
@@ -29,6 +30,8 @@ class Customers():
 
 	### Debug Functions ###
 
+	def getAverageWaitTime(self):
+		return 0
 
 	def printTimes(self):
 		print(self.clockTimes)

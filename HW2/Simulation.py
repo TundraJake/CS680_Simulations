@@ -18,10 +18,11 @@ class Simulation():
     def __init__(self, s1m, s1M, s2m, s2M, numCust, cAm, cAM):
 
         self.simClock = 0
-
         # FEL list for now, no proper FEL is in place yet.
         # Represents customers. I'll use a class to represent this later.
         self.arrivalTimes = [] 
+        self.maxQueueLength = 0
+        self.waitTime = 0
 
         self.server1 = Server.Server(s1m, s1M)
         self.server1ServerTimes = []
@@ -29,11 +30,15 @@ class Simulation():
         self.server2 = Server.Server(s2m, s2M)
         self.server2ServerTimes = []
 
-        self.averageWaitTime = 0
+        self.averageQueueLength = 0
         self.queue = deque()
+        self.averageQueueLengthPerSecond = [] # Holds a list of average queue length over time. 
+
+        self.servedCustomers = 0 # Both used to track when all customers have been served.
+        self.totalCustomers = numCust 
 
         clock = 0
-        for _ in range(numCust):
+        for _ in range(self.totalCustomers):
             time = rd.randint(cAm, cAM)
             clock += time 
             self.arrivalTimes.append(clock)
@@ -49,66 +54,109 @@ class Simulation():
     def serve1(self):
         self.server1.serveTheCustomer()
 
-    def serve2(self):
+    def serve2(self): ### Debug Function ###
         self.server2.serveTheCustomer()
 
+    def printServerResults(self):
+        self.server1.printServerTimes()
+        self.server2.printServerTimes()
 
-    def startSim(self, seconds):
+    # Functions used for statistical purposes. 
+    def setAndPrintServerResults(self):
+        self.server1ServerTimes = self.server1.getServerTimes()
+        self.server2ServerTimes = self.server2.getServerTimes()
 
-        start = time.time()
-        # time.time() returns the number of seconds since the unix epoch.
-        # To find the time since the start of the function, we get the start
-        # value, then subtract the start from all following values.
-        time.clock()    
-        # When you first call time.clock(), it just starts measuring
-        # process time. There is no point assigning it to a variable, or
-        # subtracting the first value of time.clock() from anything.
-        # Read the documentation for more details.
+        average1 = sum(self.server1ServerTimes)/self.simClock
+        print("The average Busy Time for Server One is %f." % (average1))
 
-        print(self.arrivalTimes)
+        if len(self.server1ServerTimes) == 0:
+            print("The average Serve Time for Server One is %.3f. No customers served." % (0))
+        else:
+            average1 = sum(self.server1ServerTimes)/len(self.server1ServerTimes)
+            print("The average Serve Time for Server One is %.3f." % (average1))
+
+        average2 = sum(self.server2ServerTimes)/self.simClock
+        print("The average Busy Time for Server One is %f." % (average2))
+
+        if len(self.server2ServerTimes) == 0:
+            print("The average Serve Time for Server Two is %.3f. No customers served." % (0))
+        else:
+            average2 = sum(self.server2ServerTimes)/len(self.server2ServerTimes)
+            print("The average Serve Time for Server Two is %.3f." % (average2))
+
+    ''' 
+    I chose to average the time over the entire simulation, even though the end period may be longer
+    than the last customer served. Until I can refactor this into a proper Future Event List, this will be the optimal
+    solution until then. 
+    '''
+        
+    def incrementWaitTime(self):
+        self.waitTime += len(self.queue)
+
+    def finalizeWaitTime(self):
+        self.waitTime = (self.waitTime / self.totalCustomers)
+
+    def startSim(self, name):
+
+        # print(self.arrivalTimes) # Testing times, functions correctly. 
 
         myIter = 0 
         # firstValue = self.custs.getCurrentCustomer(0)
         # print("%d is the first values" % (firstValue))
-        while self.simClock < seconds:
+        while 1:
             # self.simClock = time.time() - start
             # print("loop cycle time: %f, seconds count: %02d" % (time.clock() , self.simClock)) 
 
-            self.simClock += 1
-            if self.simClock == self.arrivalTimes[myIter]:
+            self.serve1()
+            self.serve2()
+            self.incrementWaitTime()
 
-                # Customer gets added to the queue. 
+            if self.arrivalTimes[myIter] == self.simClock:
                 self.queue.append(self.arrivalTimes[myIter])
+                if self.maxQueueLength < len(self.queue):
+                    self.maxQueueLength = len(self.queue)
+                # print("Line length %d" % len(self.queue))
+                myIter += 1
+                if myIter == self.totalCustomers:
+                    myIter = self.totalCustomers - 1
 
-                # print(self.server1.getBusyState())
-                if not self.server1.getBusyState() and len(self.queue) != 0:
-                    self.queue.popleft()
-                    self.beginServing1()
-                    self.serve1()
-                    print("Now serving next customer at time %d." % (self.arrivalTimes[myIter]))
-                    myIter += 1
-                    continue
-
-                else:
-                    #print(self.queue)
-                    print()
-
-            else:
-                print("No customer to serve or both servers are busy.")
+            # The first available server will be selected to serve the next customer.
+            # Server One is the default Server. 
+            if (not self.server1.getBusyState() and len(self.queue) > 0):
+                self.queue.popleft()
+                self.beginServing1()
                 self.serve1()
+                self.servedCustomers += 1
+                # print("\nServer One Now serving next customer at time %d.\n" % (self.simClock))
 
-            time.sleep(.25)  
+            if (not self.server2.getBusyState() and len(self.queue) > 0 and self.server1.getBusyState()):
+                self.queue.popleft()
+                self.beginServing2()
+                self.serve2()
+                self.servedCustomers += 1
+
+                # print("\nServer Two Now serving next customer at time %d.\n" % (self.simClock))
+
+            # else:
+
+                # print("No customer to serve or both servers are busy.")
+                
+            self.simClock += 1
+
+            ##############################################################################
+            ''' Uncomment print functions and change speed to see results in real time!'''
+            ##############################################################################
+            time.sleep(.0001) # 100 iterations/simulation seconds per second. Used to quickly speed up a simulation. 
+
+            if (not self.server1.getBusyState() and not self.server2.getBusyState() and self.servedCustomers == self.totalCustomers):
+                break
+
+
+        print("End of Simulation %s." % (name))
+        self.setAndPrintServerResults()
+        self.finalizeWaitTime()
+        print("The maximum queue length is %d." % (self.maxQueueLength))
+        print("Average Wait Time is %03f.\n" % (self.waitTime))
 
 
 
-
-            # You were sleeping in your original code, so I've stuck this in here...
-            # You'll notice that the process time is almost nothing.
-            # This is because we are spending most of the time sleeping,
-            # which doesn't count as process time.
-            # For funsies, try removing "time.sleep()", and see what happens.
-            # It should still run for the correct number of seconds,
-            # but it will run a lot more times, and the process time will
-            # ultimately be a lot more. 
-            # On my machine, it ran the loop 2605326 times in 20 seconds.
-            # Obviously it won't run it more than 20 times if you use time.sleep(1)
