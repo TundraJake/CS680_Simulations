@@ -7,6 +7,8 @@ import time # Used for the clock (seconds).
 import Server
 import Customers
 import random as rd
+import matplotlib.pyplot as plt
+
 
 from collections import deque
 
@@ -23,6 +25,15 @@ class Simulation():
         self.arrivalTimes = [] 
         self.maxQueueLength = 0
         self.waitTime = 0
+        self.queueLengths = []
+
+        self.cAm = cAm
+        self.cAM = cAM
+
+        self.s1m = s1m
+        self.s1M = s1M
+        self.s2m = s2m
+        self.s2M = s2M
 
         self.server1 = Server.Server(s1m, s1M)
         self.server1ServerTimes = []
@@ -101,21 +112,23 @@ class Simulation():
         # print(self.arrivalTimes) # Testing times, functions correctly. 
 
         myIter = 0 
-        # firstValue = self.custs.getCurrentCustomer(0)
-        # print("%d is the first values" % (firstValue))
+
         while 1:
-            # self.simClock = time.time() - start
-            # print("loop cycle time: %f, seconds count: %02d" % (time.clock() , self.simClock)) 
 
             self.serve1()
             self.serve2()
             self.incrementWaitTime()
 
             if self.arrivalTimes[myIter] == self.simClock:
+
                 self.queue.append(self.arrivalTimes[myIter])
+                self.queueLengths.append(len(self.queue))
+
                 if self.maxQueueLength < len(self.queue):
                     self.maxQueueLength = len(self.queue)
+
                 # print("Line length %d" % len(self.queue))
+
                 myIter += 1
                 if myIter == self.totalCustomers:
                     myIter = self.totalCustomers - 1
@@ -146,7 +159,7 @@ class Simulation():
             ##############################################################################
             ''' Uncomment print functions and change speed to see results in real time!'''
             ##############################################################################
-            time.sleep(.0001) # 100 iterations/simulation seconds per second. Used to quickly speed up a simulation. 
+            time.sleep(.0001) # 1000 iterations/simulation seconds per second. Used to quickly speed up a simulation. 
 
             if (not self.server1.getBusyState() and not self.server2.getBusyState() and self.servedCustomers == self.totalCustomers):
                 break
@@ -156,7 +169,31 @@ class Simulation():
         self.setAndPrintServerResults()
         self.finalizeWaitTime()
         print("The maximum queue length is %d." % (self.maxQueueLength))
+        print("Server One Serve Rate = [%d, %d]." %(self.s1m, self.s1M))
+        print("Server One Serve Rate = [%d, %d]." %(self.s2m, self.s2M))
+        print("Customer Arrival Rate = [%d, %d]." %(self.cAm, self.cAM))
         print("Average Wait Time is %03f.\n" % (self.waitTime))
+
+        plt.plot(self.queueLengths)
+        plt.title("Figure " + str(name) + " for Queue Lengths")
+        plt.xlabel("# of Customers Served")
+        plt.ylabel("Queue Length")
+        plt.savefig("Sim_" + str(name) + "_for_ql.png")
+        plt.clf()
+
+        plt.plot(self.server1ServerTimes)
+        plt.title("Figure " + str(name) + " for Server One")
+        plt.xlabel("# of Customers Served")
+        plt.ylabel("Serve Time")
+        plt.savefig("Sim_" + str(name) + "_for_s1.png")
+        plt.clf()
+
+        plt.plot(self.server2ServerTimes)
+        plt.title("Figure " + str(name) + " for Server Two")
+        plt.xlabel("# of Customer Served")
+        plt.ylabel("Serve Time")
+        plt.savefig("Sim_" + str(name) + "_for_s2.png")
+        plt.clf()
 
 
 
