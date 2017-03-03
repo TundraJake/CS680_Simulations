@@ -27,7 +27,6 @@ class Customers():
 			clock += time 
 			self.clockTimes.append(clock)
 
-
 	### Debug Functions ###
 
 	def getAverageWaitTime(self):
