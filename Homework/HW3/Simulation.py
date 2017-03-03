@@ -165,6 +165,7 @@ class Simulation():
                 break
 
 
+'''        
         print("End of Simulation %s." % (name))
         self.setAndPrintServerResults()
         self.finalizeWaitTime()
@@ -195,5 +196,5 @@ class Simulation():
         plt.savefig("Sim_" + str(name) + "_for_s2.png")
         plt.clf()
 
-
+'''
 

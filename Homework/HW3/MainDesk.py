@@ -1,12 +1,12 @@
 '''
 Jacob McKenna
 UAF CS 680 Discrete Event Simulation 
-Server Class 
+MainDesk Class - First contact for client, sends them off on to another queue.
 '''
-import Customers 
+
 import random as rand
 
-class Server():
+class MainDesk():
 
 	def __init__(self, mint, maxt):
 		self.averageServeTime = 0
@@ -24,6 +24,13 @@ class Server():
 			# print("This is the current server time %d." %(self.currentServeTime))
 		# else:
 		# 	print("Service already started.")
+
+	'''
+		assignQueue - Assign Queue ranges from 
+	'''
+	def assignQueue(self):
+
+
 
 	def serveTheCustomer(self):
 		if (self.currentServeTime != 0):
@@ -53,4 +60,3 @@ class Server():
 
 	def getAverageServeTime(self):
 		return self.averageServeTime
-
