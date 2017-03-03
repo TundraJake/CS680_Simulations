@@ -14,7 +14,10 @@ class MainDesk():
 		self.minTime = mint
 		self.maxTime = maxt
 		self.currentServeTime = 0
-		self.serverTimes = []		
+		self.serverTimes = []
+		self.queue1 = 0
+		self.queue2 = 0
+		self.queue3	= 0 
 
 	def startService(self):
 		if (self.currentServeTime == 0 and not self.busy):
@@ -29,10 +32,19 @@ class MainDesk():
 		assignQueue - Assign Queue ranges from 0 to 100. This is a variable function, not a part of the exam.
 	'''
 	def assignQueue(self):
-		queue1 = rand.randint(0, 100)
-		queue2 = rand.randint(queue1, 100 - queue1)
-		print("q1,q2 = [%d, %d]" % (queue1, queue2))
+		self.queue1 = rand.randint(0, 100)
+		self.queue2 = rand.randint(0, 100 - self.queue1)
+		self.queue3 = 100 - self.queue1 - self.queue2
+		print("q1,q2,q3 = [%d, %d, %d]" % (self.queue1, self.queue2, self.queue3))
 
+
+		# Needs to be rewritten.... 
+	def assignQueue1(self, newVal):
+		self.queue1 = newVal
+	def assignQueue2(self, newVal):
+		self.queue2 = newVal
+	def assignQueue3(self, newVal):
+		self.queue3 = newVal
 
 	'''
 		assignQueue - Assign Queue ranges from 0 to 100. This is required for exam. 
