@@ -26,11 +26,25 @@ class MainDesk():
 		# 	print("Service already started.")
 
 	'''
-		assignQueue - Assign Queue ranges from 
+		assignQueue - Assign Queue ranges from 0 to 100. This is a variable function, not a part of the exam.
 	'''
 	def assignQueue(self):
+		queue1 = rand.randint(0, 100)
+		queue2 = rand.randint(queue1, 100 - queue1)
+		print("q1,q2 = [%d, %d]" % (queue1, queue2))
 
 
+	'''
+		assignQueue - Assign Queue ranges from 0 to 100. This is required for exam. 
+	'''
+	def examQueue(self):
+		val = rand.randint(1,10)
+		if val >= 1 and val <= 4:
+			print("DL queue")
+		elif val >= 5 and val <= 8:
+			print("RG queue")
+		elif val >= 9 and val <= 10:
+			print("BO queue")
 
 	def serveTheCustomer(self):
 		if (self.currentServeTime != 0):
