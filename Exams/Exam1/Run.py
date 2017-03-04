@@ -6,34 +6,12 @@ Many print functions may be uncommented to show bahavior of the simulation.
 '''
 
 import Server
-import Simulation
+#import Simulation
 import MainDesk
 
 # Simulation init func - 
 # def __init__(self, s1m, s1M, s2m, s2M, numCust, cAm, cAM):
 
-md = MainDesk.MainDesk(1,3)
+m1 = MainDesk.MainDesk(1,4)
 
-md.examQueue()
-md.examQueue()
-md.examQueue()
-md.examQueue()
-md.examQueue()
-
-md.examQueue()
-md.examQueue()
-md.examQueue()
-md.examQueue()
-md.examQueue()
-
-md.assignQueue()
-md.assignQueue()
-md.assignQueue()
-md.assignQueue()
-md.assignQueue()
-
-md.assignQueue()
-md.assignQueue()
-md.assignQueue()
-md.assignQueue()
-md.assignQueue()
+m1.printServerTimes()

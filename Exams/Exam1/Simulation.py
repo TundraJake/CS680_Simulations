@@ -8,7 +8,7 @@ import Server
 import Customers
 import random as rd
 import matplotlib.pyplot as plt
-
+import MainDesk
 
 from collections import deque
 
@@ -17,7 +17,7 @@ from collections import deque
 ###
 class Simulation():
 
-    def __init__(self, s1m, s1M, s2m, s2M, numCust, cAm, cAM):
+    def __init__(self, mdm, mdM, dlm, dlM, vrm, vrM, bom, boM):
 
         self.simClock = 0
         # FEL list for now, no proper FEL is in place yet.
@@ -27,73 +27,32 @@ class Simulation():
         self.waitTime = 0
         self.queueLengths = []
 
-        self.cAm = cAm
-        self.cAM = cAM
+        # self.mainDeak = MainDesk.MainDesk()
 
-        self.s1m = s1m
-        self.s1M = s1M
-        self.s2m = s2m
-        self.s2M = s2M
+        # 
 
-        self.server1 = Server.Server(s1m, s1M)
-        self.server1ServerTimes = []
+        self.mdm = mdm
+        self.mdM = mdM
+        self.dlm = dlm
+        self.dlM = dlM
+        self.vrm = vrm 
+        self.vrM = vrM
+        self.bom = bom
+        self.boM = boM
 
-        self.server2 = Server.Server(s2m, s2M)
-        self.server2ServerTimes = []
+        self.totalCustomers = numCust 
+        
+
+        self.servedCustomers = 0 # Both used to track when all customers have been served.
+        
+        self.mainDeskServeTimes = []
 
         self.averageQueueLength = 0
         self.queue = deque()
-        self.averageQueueLengthPerSecond = [] # Holds a list of average queue length over time. 
-
-        self.servedCustomers = 0 # Both used to track when all customers have been served.
-        self.totalCustomers = numCust 
+        self.averageQueueLengthPerSecond = [] # Holds a list of average queue length over time.     
 
         clock = 0
-        for _ in range(self.totalCustomers):
-            time = rd.randint(cAm, cAM)
-            clock += time 
-            self.arrivalTimes.append(clock)
 
-        self.lastCustomerTime = self.arrivalTimes[-1]
-
-    def beginServing1(self):
-        self.server1.startService()
-
-    def beginServing2(self):
-        self.server2.startService()
-
-    def serve1(self):
-        self.server1.serveTheCustomer()
-
-    def serve2(self): ### Debug Function ###
-        self.server2.serveTheCustomer()
-
-    def printServerResults(self):
-        self.server1.printServerTimes()
-        self.server2.printServerTimes()
-
-    # Functions used for statistical purposes. 
-    def setAndPrintServerResults(self):
-        self.server1ServerTimes = self.server1.getServerTimes()
-        self.server2ServerTimes = self.server2.getServerTimes()
-
-        average1 = sum(self.server1ServerTimes)/self.simClock
-        print("The average Busy Time for Server One is %f." % (average1))
-
-        if len(self.server1ServerTimes) == 0:
-            print("The average Serve Time for Server One is %.3f. No customers served." % (0))
-        else:
-            average1 = sum(self.server1ServerTimes)/len(self.server1ServerTimes)
-            print("The average Serve Time for Server One is %.3f." % (average1))
-
-        average2 = sum(self.server2ServerTimes)/self.simClock
-        print("The average Busy Time for Server One is %f." % (average2))
-
-        if len(self.server2ServerTimes) == 0:
-            print("The average Serve Time for Server Two is %.3f. No customers served." % (0))
-        else:
-            average2 = sum(self.server2ServerTimes)/len(self.server2ServerTimes)
-            print("The average Serve Time for Server Two is %.3f." % (average2))
 
     ''' 
     I chose to average the time over the entire simulation, even though the end period may be longer
@@ -115,8 +74,6 @@ class Simulation():
 
         while 1:
 
-            self.serve1()
-            self.serve2()
             self.incrementWaitTime()
 
             if self.arrivalTimes[myIter] == self.simClock:
@@ -133,22 +90,22 @@ class Simulation():
                 if myIter == self.totalCustomers:
                     myIter = self.totalCustomers - 1
 
-            # The first available server will be selected to serve the next customer.
-            # Server One is the default Server. 
-            if (not self.server1.getBusyState() and len(self.queue) > 0):
-                self.queue.popleft()
-                self.beginServing1()
-                self.serve1()
-                self.servedCustomers += 1
-                # print("\nServer One Now serving next customer at time %d.\n" % (self.simClock))
+            # # The first available server will be selected to serve the next customer.
+            # # Server One is the default Server. 
+            # if (not self.server1.getBusyState() and len(self.queue) > 0):
+            #     self.queue.popleft()
+            #     self.beginServing1()
+            #     self.serve1()
+            #     self.servedCustomers += 1
+            #     # print("\nServer One Now serving next customer at time %d.\n" % (self.simClock))
 
-            if (not self.server2.getBusyState() and len(self.queue) > 0 and self.server1.getBusyState()):
-                self.queue.popleft()
-                self.beginServing2()
-                self.serve2()
-                self.servedCustomers += 1
+            # if (not self.server2.getBusyState() and len(self.queue) > 0 and self.server1.getBusyState()):
+            #     self.queue.popleft()
+            #     self.beginServing2()
+            #     self.serve2()
+            #     self.servedCustomers += 1
 
-                # print("\nServer Two Now serving next customer at time %d.\n" % (self.simClock))
+            #     # print("\nServer Two Now serving next customer at time %d.\n" % (self.simClock))
 
             # else:
 

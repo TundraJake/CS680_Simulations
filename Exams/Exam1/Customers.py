@@ -10,7 +10,7 @@ the customers.
 '''
 import random as rd
 
-class Customers():
+class Customers(object):
 
 	def __init__(self, numCustomers, mint, maxt):
 		self.arrivalTime = 0

@@ -6,7 +6,7 @@ Server Class
 import Customers 
 import random as rand
 
-class Server():
+class Server(object):
 
 	def __init__(self, mint, maxt):
 		self.averageServeTime = 0
@@ -18,7 +18,7 @@ class Server():
 
 	def startService(self):
 		if (self.currentServeTime == 0 and not self.busy):
-			self.toggleBusy() # Serving
+			toggleBusy() # Serving
 			self.currentServeTime = rand.randint(self.minTime, self.maxTime)
 			self.serverTimes.append(self.currentServeTime)
 			# print("This is the current server time %d." %(self.currentServeTime))
@@ -32,7 +32,7 @@ class Server():
 
 		elif (self.currentServeTime == 0 and self.busy): 
 			# print("Finished Serving, not busy anymore.")
-			self.toggleBusy() # Not busy anymore.
+			toggleBusy() # Not busy anymore.
 
 		# else:
 			# print("Currently not busy.")
