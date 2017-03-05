@@ -17,9 +17,25 @@ from collections import deque
 ###
 class Simulation():
 
-    def __init__(self, mdm, mdM, dlm, dlM, vrm, vrM, bom, boM):
+    def __init__(self, mdm, mdM, dlm, dlM, vrm, vrM, bom, boM, examORrandom):
 
         self.simClock = 0
+        # Main Desk
+        self.mdm = mdm
+        self.mdM = mdM
+        # Driver License
+        self.dlm = dlm
+        self.dlM = dlM
+        # Vehicle Registration
+        self.vrm = vrm 
+        self.vrM = vrM
+        # Both 
+        self.bom = bom
+        self.boM = boM
+
+        self.DLServers = []
+        self.VRServers = []
+        self.BOServers = []
         # FEL list for now, no proper FEL is in place yet.
         # Represents customers. I'll use a class to represent this later.
         self.arrivalTimes = [] 
@@ -28,19 +44,16 @@ class Simulation():
         self.queueLengths = []
 
         # self.mainDeak = MainDesk.MainDesk()
+        if examORrandom: # If True, Exam, else random.
+            for _ in range(2):
+                self.DLServers.append(Server.Server(self.dlm, self.dlM))
+                self.VRServers.append(Server.Server(self.vrm, self.vrM))
+            self.BOServers.append(Server.Server(self.bom, self.boM))
 
-        # 
-
-        self.mdm = mdm
-        self.mdM = mdM
-        self.dlm = dlm
-        self.dlM = dlM
-        self.vrm = vrm 
-        self.vrM = vrM
-        self.bom = bom
-        self.boM = boM
-
-        self.totalCustomers = numCust 
+        print(len(self.DLServers))
+        print(len(self.VRServers))
+        print(len(self.BOServers))
+ 
         
 
         self.servedCustomers = 0 # Both used to track when all customers have been served.

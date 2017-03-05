@@ -31,13 +31,10 @@ class MainDesk(Server.Server):
 		rval = rand.randint(1,100)
 		q1q2 = (self.queue1Dist + self.queue2Dist)
 		if rval >= 1 and rval <= self.queue1Dist:
-			print("DL")
 			return "DL"
 		elif rval >= self.queue1Dist and rval <= q1q2:
-			print("VR")
 			return "VR"
 		elif rval >= q1q2 and rval <= 100:
-			print("BO")
 			return "BO"
 
 
@@ -47,12 +44,9 @@ class MainDesk(Server.Server):
 	def examQueueAssignment(self):
 		rval = rand.randint(1,10)
 		if rval >= 1 and rval <= 4:
-			print("DL")
 			return "DL"
 		elif rval >= 5 and rval <= 8:
-			print("VR")
 			return "VR"
 		elif rval >= 9 and rval <= 10:
-			print("BO")
 			return "BO"
 
