@@ -15,9 +15,9 @@ import FEL
 # def __init__(self, ctm, ctM, mdm, mdM, dlm, dlM, vrm, vrM, bom, boM, exam, hours(in minutes)):
 
 
-m1 = MainDesk.MainDesk(1,4, 'test')
+m1 = MainDesk.MainDesk(1,4, 'MD', True)
 s1 = Simulation.Simulation(1,4,   1,4,  10,20,   10,20  ,15,40, True, 480, 450)
-s1.startSim("what")
+s1.startSim("Please Work")
 
 
 # myFEL = FEL.FEL()

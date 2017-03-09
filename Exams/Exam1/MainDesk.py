@@ -9,8 +9,8 @@ import Server
 
 class MainDesk(Server.Server):
 
-	def __init__(self, mint, maxt, serverID):
-		super().__init__(mint, maxt, serverID)
+	def __init__(self, mint, maxt, serverID, exam):
+		super().__init__(mint, maxt, serverID, exam)
 		self.queue1Dist = 0 
 		self.queue2Dist = 0 
 		self.queue3Dist = 0 
@@ -31,11 +31,13 @@ class MainDesk(Server.Server):
 		rval = rand.randint(1,100)
 		q1q2 = (self.queue1Dist + self.queue2Dist)
 		if rval >= 1 and rval <= self.queue1Dist:
-			return "DL"
+			self.servingCustomer[2] = 'DL Queue'
 		elif rval >= self.queue1Dist and rval <= q1q2:
-			return "VR"
+			self.servingCustomer[2] = 'VR Queue'
 		elif rval >= q1q2 and rval <= 100:
-			return "BO"
+			self.servingCustomer[2] = 'BO Queue'
+
+		return self.servingCustomer
 
 
 	'''
@@ -44,9 +46,60 @@ class MainDesk(Server.Server):
 	def examQueueAssignment(self):
 		rval = rand.randint(1,10)
 		if rval >= 1 and rval <= 4:
-			return "DL"
+			self.servingCustomer[2] = 'DL Queue'
 		elif rval >= 5 and rval <= 8:
-			return "VR"
+			self.servingCustomer[2] = 'VR Queue'
 		elif rval >= 9 and rval <= 10:
-			return "BO"
+		 	self.servingCustomer[2] = 'BO Queue'
+
+		return self.servingCustomer
+
+	def serveTheCustomer(self, time):
+		if (self.currentServeTime != 0):
+			self.currentServeTime -= 1
+			# print("Server is busy.")
+
+		elif (self.currentServeTime == 0 and self.busy and self.serverID == 'MD'):
+			self.toggleBusy()
+			self.servingCustomer[0] = time
+			assignment = self.examQueueAssignment()
+			print(assignment)
+			return assignment
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -12,9 +12,8 @@ class FEL(object):
 		# 1st element = string type
 		self.futureEventList = deque( [] ) 
 
-	def pushEvent(self, time, person, action):
-		listItem = [time, person, action]
-		self.futureEventList.append(listItem)
+	def pushEvent(self, item):
+		self.futureEventList.append(item)
 		self.sortFEL()
 
 	def printFEL(self):
@@ -27,3 +26,5 @@ class FEL(object):
 	def popEvent(self):
 		return self.futureEventList.popleft()
 
+	def getFEL(self):
+		return self.futureEventList

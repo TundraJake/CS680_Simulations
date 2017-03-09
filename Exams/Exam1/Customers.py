@@ -9,12 +9,12 @@ Need refactor this into a better class, simulation is simulating
 the customers. 
 '''
 import random as rd
-
+from collections import deque
 class Customers(object):
 
 	def __init__(self, close, mint, maxt):
 		self.arrivalTime = 0
-		self.clockTimes = []
+		self.clockTimes = deque()
 		self.custArrMin = mint
 		self.custArrMax = maxt
 
