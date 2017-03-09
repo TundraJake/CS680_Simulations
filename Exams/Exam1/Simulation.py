@@ -6,9 +6,10 @@ Server Class
 import time # Used for the clock (seconds).
 import Server
 import Customers
-import random as rd
+import random as rand
 import matplotlib.pyplot as plt
 import MainDesk
+import FEL
 
 from collections import deque
 
@@ -17,67 +18,67 @@ from collections import deque
 ###
 class Simulation():
 
-    def __init__(self, mdm, mdM, dlm, dlM, vrm, vrM, bom, boM, examORrandom):
+    def __init__(self, ctm, ctM, mdm, mdM, dlm, dlM, vrm, vrM, bom, boM, exam, opens, closes):
 
         self.simClock = 0
+        self.FEL = FEL.FEL()
+        # Customer Arrival Times
+        self.ctm = ctm
+        self.ctM = ctM 
         # Main Desk
         self.mdm = mdm
         self.mdM = mdM
         # Driver License
         self.dlm = dlm
         self.dlM = dlM
-        # Vehicle Registration
+        # Vehicle Registration8
         self.vrm = vrm 
         self.vrM = vrM
         # Both 
         self.bom = bom
         self.boM = boM
 
+        # Open and close times. Close time represents when last customer can be served.
+        self.open = opens
+        self.closes = closes
+
+        newCusts = Customers.Customers(self.closes, ctm, ctM)
+        totalCustomers = range(len(newCusts.getAllCustomers()))
+        for i in totalCustomers:
+            self.FEL.pushEvent(newCusts.getCurrentCustomer(i), 'c' + str(i), 'arr')
+
+        # All Servers
+        self.mainDesk = Server.Server(self.mdm, self.mdM, 'MD1')
+        self.MDServerQueue = deque()
+        self.MDwaitTime = 0
+        self.MDmaxQueueLengths = 0
+
         self.DLServers = []
+        self.DLServerQueue = deque()
+        self.DLwaitTime = 0
+        self.DLmaxQueueLengths = 0
+
         self.VRServers = []
+        self.VRServerQueue = deque()
+        self.VRwaitTime = 0
+        self.VRmaxQueueLengths = 0
+
         self.BOServers = []
-        # FEL list for now, no proper FEL is in place yet.
-        # Represents customers. I'll use a class to represent this later.
-        self.arrivalTimes = [] 
-        self.maxQueueLength = 0
-        self.waitTime = 0
-        self.queueLengths = []
+        self.BOServerQueue = deque()
+        self.BOwaitTime = 0
+        self.BOmaxQueueLengths = 0     
 
-        # self.mainDeak = MainDesk.MainDesk()
-        if examORrandom: # If True, Exam, else random.
-            for _ in range(2):
-                self.DLServers.append(Server.Server(self.dlm, self.dlM))
-                self.VRServers.append(Server.Server(self.vrm, self.vrM))
-            self.BOServers.append(Server.Server(self.bom, self.boM))
+        # self.mainDesk = MainDesk.MainDesk()
+        if exam: # If True, Exam, else random.
+            for i in range(2):
+                self.DLServers.append(Server.Server(self.dlm, self.dlM, 'DL' + str(i)))
+                self.VRServers.append(Server.Server(self.vrm, self.vrM, 'VR' + str(i)))
+            self.BOServers.append(Server.Server(self.bom, self.boM, "BO1"))
 
-        print(len(self.DLServers))
-        print(len(self.VRServers))
-        print(len(self.BOServers))
- 
-        
+        else:
+            print("not implemented yet!!!")
 
-        self.servedCustomers = 0 # Both used to track when all customers have been served.
-        
-        self.mainDeskServeTimes = []
-
-        self.averageQueueLength = 0
-        self.queue = deque()
-        self.averageQueueLengthPerSecond = [] # Holds a list of average queue length over time.     
-
-        clock = 0
-
-
-    ''' 
-    I chose to average the time over the entire simulation, even though the end period may be longer
-    than the last customer served. Until I can refactor this into a proper Future Event List, this will be the optimal
-    solution until then. 
-    '''
-        
-    def incrementWaitTime(self):
-        self.waitTime += len(self.queue)
-
-    def finalizeWaitTime(self):
-        self.waitTime = (self.waitTime / self.totalCustomers)
+    
 
     def startSim(self, name):
 
@@ -86,22 +87,19 @@ class Simulation():
         myIter = 0 
 
         while 1:
+            # self.incrementWaitTime()
+        
+            #     self.queue.append(self.arrivalTimes[myIter])
+            #     self.queueLengths.append(len(self.queue))
 
-            self.incrementWaitTime()
+            #     if self.maxQueueLength < len(self.queue):
+            #         self.maxQueueLength = len(self.queue)
 
-            if self.arrivalTimes[myIter] == self.simClock:
+            #     # print("Line length %d" % len(self.queue))
 
-                self.queue.append(self.arrivalTimes[myIter])
-                self.queueLengths.append(len(self.queue))
-
-                if self.maxQueueLength < len(self.queue):
-                    self.maxQueueLength = len(self.queue)
-
-                # print("Line length %d" % len(self.queue))
-
-                myIter += 1
-                if myIter == self.totalCustomers:
-                    myIter = self.totalCustomers - 1
+            #     myIter += 1
+            #     if myIter == self.totalCustomers:
+            #         myIter = self.totalCustomers - 1
 
             # # The first available server will be selected to serve the next customer.
             # # Server One is the default Server. 
@@ -123,16 +121,9 @@ class Simulation():
             # else:
 
                 # print("No customer to serve or both servers are busy.")
-                
-            self.simClock += 1
-
-            ##############################################################################
-            ''' Uncomment print functions and change speed to see results in real time!'''
-            ##############################################################################
-            time.sleep(.0001) # 1000 iterations/simulation seconds per second. Used to quickly speed up a simulation. 
-
-            if (not self.server1.getBusyState() and not self.server2.getBusyState() and self.servedCustomers == self.totalCustomers):
-                break
+            time.sleep(.5) 
+            # if (not self.server1.getBusyState() and not self.server2.getBusyState() and self.servedCustomers == self.totalCustomers):
+            #     break
 
 
 '''        

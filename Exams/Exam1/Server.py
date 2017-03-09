@@ -8,11 +8,12 @@ import random as rand
 
 class Server(object):
 
-	def __init__(self, mint, maxt):
+	def __init__(self, mint, maxt, serverID):
 		self.averageServeTime = 0
 		self.busy = False
 		self.minTime = mint
 		self.maxTime = maxt
+		self.serverID = serverID
 		self.currentServeTime = 0
 		self.serverTimes = []		
 
@@ -37,13 +38,14 @@ class Server(object):
 		# else:
 			# print("Currently not busy.")
 
+	def getServerID(self):
+		return self.serverID
 
 	def printServerTimes(self): ### Debug Function ###
 		print(self.serverTimes)
 
 	def getServerTimes(self):
 		return self.serverTimes
-
 
 	def getBusyState(self):
 		return self.busy

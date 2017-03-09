@@ -12,25 +12,22 @@ import random as rd
 
 class Customers(object):
 
-	def __init__(self, numCustomers, mint, maxt):
+	def __init__(self, close, mint, maxt):
 		self.arrivalTime = 0
-		self.clockTimes = [] # FEL list for now, no proper FEL is in place yet.
-		self.waitTimeForEachCustomer = []
-		self.numCustomers = numCustomers
+		self.clockTimes = []
 		self.custArrMin = mint
 		self.custArrMax = maxt
 
 		### Generates the customer arrival times.
 		clock = 0 
-		for _ in range(self.numCustomers):
+		while clock < close:			
 			time = rd.randint(self.custArrMin, self.custArrMax)
 			clock += time 
-			self.clockTimes.append(clock)
+			if clock < close:
+				self.clockTimes.append(clock)
+
 
 	### Debug Functions ###
-
-	def getAverageWaitTime(self):
-		return 0
 
 	def printTimes(self):
 		print(self.clockTimes)
