@@ -25,7 +25,7 @@ class Server(object):
 			self.currentServeTime = rand.randint(self.minTime, self.maxTime)
 			self.serverTimes.append(self.currentServeTime)
 			self.servingCustomer = customer
-			print("Servicing customer %s." %(self.servingCustomer[1]))
+			print("Servicing customer %s at %s" %(self.servingCustomer[1], self.serverID))
 			return [time, self.serverID, 'start'], [time + self.currentServeTime, self.serverID, 'stop']
 
 	__service = service
@@ -34,13 +34,12 @@ class Server(object):
 		# 	print("Service already started.")
 
 	def serveTheCustomer(self):
-		print(self.currentServeTime)
 		if (self.currentServeTime != 0):
 			self.currentServeTime -= 1
 			# print("Server is busy.")
 
 		elif (self.currentServeTime == 0 and self.busy): 
-			# print("Finished Serving, not busy anymore.")
+			print("Finished Serving, not busy anymore for %s." %(self.serverID))
 			self.toggleBusy() # Not busy anymore.
 
 	__serveTheCustomer = serveTheCustomer

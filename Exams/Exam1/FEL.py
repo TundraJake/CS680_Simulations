@@ -10,6 +10,7 @@ class FEL(object):
 	def __init__(self):
 		# 0th element = int type
 		# 1st element = string type
+		# 2nd element = event type
 		self.futureEventList = deque( [] ) 
 
 	def pushEvent(self, item):

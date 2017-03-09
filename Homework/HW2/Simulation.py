@@ -113,6 +113,7 @@ class Simulation():
 
         myIter = 0 
 
+        print(self.arrivalTimes)
         while 1:
 
             self.serve1()
@@ -140,15 +141,15 @@ class Simulation():
                 self.beginServing1()
                 self.serve1()
                 self.servedCustomers += 1
-                # print("\nServer One Now serving next customer at time %d.\n" % (self.simClock))
+                print("\nServer One Now serving next customer at time %d.\n" % (self.simClock))
 
-            if (not self.server2.getBusyState() and len(self.queue) > 0 and self.server1.getBusyState()):
+            if (not self.server2.getBusyState() and len(self.queue) > 0):
                 self.queue.popleft()
                 self.beginServing2()
                 self.serve2()
                 self.servedCustomers += 1
 
-                # print("\nServer Two Now serving next customer at time %d.\n" % (self.simClock))
+                print("\nServer Two Now serving next customer at time %d.\n" % (self.simClock))
 
             # else:
 
@@ -159,7 +160,7 @@ class Simulation():
             ##############################################################################
             ''' Uncomment print functions and change speed to see results in real time!'''
             ##############################################################################
-            time.sleep(.0001) # 1000 iterations/simulation seconds per second. Used to quickly speed up a simulation. 
+            time.sleep(.25) # 1000 iterations/simulation seconds per second. Used to quickly speed up a simulation. 
 
             if (not self.server1.getBusyState() and not self.server2.getBusyState() and self.servedCustomers == self.totalCustomers):
                 break

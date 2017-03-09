@@ -57,14 +57,16 @@ class MainDesk(Server.Server):
 	def serveTheCustomer(self, time):
 		if (self.currentServeTime != 0):
 			self.currentServeTime -= 1
-			# print("Server is busy.")
+			return False
 
 		elif (self.currentServeTime == 0 and self.busy and self.serverID == 'MD'):
 			self.toggleBusy()
 			self.servingCustomer[0] = time
 			assignment = self.examQueueAssignment()
-			print(assignment)
 			return assignment
+
+		else:
+			return False
 
 
 

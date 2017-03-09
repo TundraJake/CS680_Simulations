@@ -21,7 +21,7 @@ class Server():
 			self.toggleBusy() # Serving
 			self.currentServeTime = rand.randint(self.minTime, self.maxTime)
 			self.serverTimes.append(self.currentServeTime)
-			# print("This is the current server time %d." %(self.currentServeTime))
+			print("This is the current server time %d." %(self.currentServeTime))
 		# else:
 		# 	print("Service already started.")
 
