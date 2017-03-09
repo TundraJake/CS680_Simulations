@@ -148,7 +148,7 @@ class Simulation():
 
             if self.custArrival[myIter] == self.simClock:
 
-                self.MDServerQueue.append(self.FEL.popEvent())
+                self.MDServerQueue.append([self.custArrival[myIter], 'c'+str(myIter), 'arr'])
                 # self.queueLengths.append(len(self.MDServerQueue))
 
                 if self.MDmaxQueueLengths < len(self.MDServerQueue):
@@ -167,8 +167,8 @@ class Simulation():
                 # print("what the frick")
                 # print(stop)
                 # print("why are you being crap")
-                # self.FEL.pushEvent(start)
-                # self.FEL.pushEvent(stop)
+                self.FEL.pushEvent(start)
+                self.FEL.pushEvent(stop)
 
             for i in range(len(self.DLServers)):
                 if (not self.DLServers[i].getBusyState() and len(self.DLServerQueue) > 0):
@@ -178,6 +178,8 @@ class Simulation():
                     print(customer)
                     print(start)
                     print(stop)
+                    self.FEL.pushEvent(start)
+                    self.FEL.pushEvent(stop)
                     self.DLServers[i].serveTheCustomer()
                     print("Server %s is FINALLY DOING SOMETHING USEFUL!!!" %(self.DLServers[i].getServerID()))
                     served += 1
@@ -191,6 +193,8 @@ class Simulation():
                     print("here's the bug for vr")
                     print(start)
                     print(stop)
+                    self.FEL.pushEvent(start)
+                    self.FEL.pushEvent(stop)
                     self.VRServers[i].serveTheCustomer()
                     print("Server %s is FINALLY DOING SOMETHING USEFUL!!!" %(self.VRServers[i].getServerID()))
                     served += 1
@@ -204,6 +208,8 @@ class Simulation():
                     print("here's the bug for bo")
                     print(start)
                     print(stop)
+                    self.FEL.pushEvent(start)
+                    self.FEL.pushEvent(stop)
                     self.BOServers[i].serveTheCustomer()
                     print("Server %s is FINALLY DOING SOMETHING USEFUL!!!" %(self.BOServers[i].getServerID()))
                     served += 1
