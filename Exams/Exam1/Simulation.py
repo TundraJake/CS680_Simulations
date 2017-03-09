@@ -43,13 +43,22 @@ class Simulation():
         self.closes = closes
         self.exam = exam
 
+        self.custArrival = []
+
         self.custs = Customers.Customers(self.closes, ctm, ctM)
         totalCustomers = len(self.custs.getAllCustomers())
         for i in range(totalCustomers):
-            item = [self.custs.getCurrentCustomer(i), 'c' + str(i), 'arr']
-            self.FEL.pushEvent(item)
+
+            time = self.custs.getCurrentCustomer(i)
+            name = 'c' + str(i)
+
+            self.custArrival.append(time)
+
+            FELItem = [time, name, 'arr']
+            self.FEL.pushEvent(FELItem)
 
         self.totalCustomers = len(self.custs.getAllCustomers())
+
 
         # All Servers
     
@@ -92,11 +101,10 @@ class Simulation():
         myIter = 0 
         served = 0
 
-        custArrival = self.FEL.getFEL()
-
-        self.FEL.printFEL()
+        print(self.custArrival)
 
         while 1:
+
             print("\nTime = %d" %(self.simClock))
 
             MDresult = self.mainDesk.serveTheCustomer(self.simClock)
@@ -132,20 +140,24 @@ class Simulation():
             for i in range(len(self.BOServers)):
                 self.BOServers[i].serveTheCustomer()
 
-            
-            if custArrival[myIter][0] == self.simClock:
 
-                self.MDServerQueue.append(custArrival[myIter])
+
+
+
+
+
+            if self.custArrival[myIter] == self.simClock:
+
+                self.MDServerQueue.append(self.FEL.popEvent())
                 # self.queueLengths.append(len(self.MDServerQueue))
 
                 if self.MDmaxQueueLengths < len(self.MDServerQueue):
                     self.MDmaxQueueLengths = len(self.MDServerQueue)
 
-                # print("Line length %d" % len(self.queue))
-
                 myIter += 1
                 if myIter == self.totalCustomers:
-                    myIter = self.totalCustomers - 1
+                    myIter -= 1 # avoids out of bound access
+
 
             if (not self.mainDesk.getBusyState() and len(self.MDServerQueue) > 0):
                 customer = self.MDServerQueue.popleft()
@@ -155,8 +167,8 @@ class Simulation():
                 # print("what the frick")
                 # print(stop)
                 # print("why are you being crap")
-                self.FEL.pushEvent(start)
-                self.FEL.pushEvent(stop)
+                # self.FEL.pushEvent(start)
+                # self.FEL.pushEvent(stop)
 
             for i in range(len(self.DLServers)):
                 if (not self.DLServers[i].getBusyState() and len(self.DLServerQueue) > 0):
@@ -168,7 +180,7 @@ class Simulation():
                     print(stop)
                     self.DLServers[i].serveTheCustomer()
                     print("Server %s is FINALLY DOING SOMETHING USEFUL!!!" %(self.DLServers[i].getServerID()))
-                    # self.servedCustomers += 1
+                    served += 1
 
             for i in range(len(self.VRServers)):
                 if (not self.VRServers[i].getBusyState() and len(self.VRServerQueue) > 0):
@@ -181,7 +193,7 @@ class Simulation():
                     print(stop)
                     self.VRServers[i].serveTheCustomer()
                     print("Server %s is FINALLY DOING SOMETHING USEFUL!!!" %(self.VRServers[i].getServerID()))
-
+                    served += 1
 
             for i in range(len(self.BOServers)):
                 if (not self.BOServers[i].getBusyState() and len(self.BOServerQueue) > 0):
@@ -194,6 +206,7 @@ class Simulation():
                     print(stop)
                     self.BOServers[i].serveTheCustomer()
                     print("Server %s is FINALLY DOING SOMETHING USEFUL!!!" %(self.BOServers[i].getServerID()))
+                    served += 1
 
             print('\n')
             print("MD server queue = %d" %(len(self.MDServerQueue)))
@@ -201,8 +214,10 @@ class Simulation():
             print("VR server queue = %d" %(len(self.VRServerQueue)))
             print("BO server queue = %d" %(len(self.BOServerQueue)))
 
-            time.sleep(.5)
-            self.simClock += 1 
+            time.sleep(.008)
+            print(self.totalCustomers)
+            print(served)
+            self.simClock += 1
             # if (not self.server1.getBusyState() and not self.server2.getBusyState() and self.servedCustomers == self.totalCustomers):
             #     break
 

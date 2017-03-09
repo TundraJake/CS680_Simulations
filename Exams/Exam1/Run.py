@@ -16,7 +16,7 @@ import FEL
 
 
 m1 = MainDesk.MainDesk(1,4, 'MD', True)
-s1 = Simulation.Simulation(1,4,   1,4,  10,20,   10,20  ,15,40, True, 480, 450)
+s1 = Simulation.Simulation(1,4,   1,4,  10,20,   10,30  ,15,40, True, 480, 450)
 s1.startSim("Please Work")
 
 

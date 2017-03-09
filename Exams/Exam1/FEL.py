@@ -11,7 +11,7 @@ class FEL(object):
 		# 0th element = int type
 		# 1st element = string type
 		# 2nd element = event type
-		self.futureEventList = deque( [] ) 
+		self.futureEventList = deque() 
 
 	def pushEvent(self, item):
 		self.futureEventList.append(item)
