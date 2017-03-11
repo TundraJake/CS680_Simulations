@@ -9,8 +9,8 @@ import Server
 
 class MainDesk(Server.Server):
 
-	def __init__(self, mint, maxt, serverID, exam):
-		super().__init__(mint, maxt, serverID, exam)
+	def __init__(self, mint, maxt, serverID):
+		super().__init__(mint, maxt, serverID)
 		self.queue1Dist = 0 
 		self.queue2Dist = 0 
 		self.queue3Dist = 0 

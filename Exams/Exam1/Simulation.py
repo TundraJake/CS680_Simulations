@@ -18,10 +18,11 @@ from collections import deque
 ###
 class Simulation():
 
-    def __init__(self, ctm, ctM, mdm, mdM, dlm, dlM, vrm, vrM, bom, boM, exam, opens, closes):
+    def __init__(self, ctm, ctM, mdm, mdM, dlm, dlM, vrm, vrM, bom, boM, opens, closes, numDL, numVR, numBO):
 
         self.simClock = 0
         self.FEL = FEL.FEL()
+        self.timePoints = []
         # Customer Arrival Times
         self.ctm = ctm
         self.ctM = ctM 
@@ -37,11 +38,13 @@ class Simulation():
         # Both 
         self.bom = bom
         self.boM = boM
+        self.numDL = numDL
+        self.numVR = numVR
+        self.numBO = numBO
 
         # Open and close times. Close time represents when last customer can be served.
         self.open = opens
         self.closes = closes
-        self.exam = exam
 
         self.custArrival = []
 
@@ -62,7 +65,7 @@ class Simulation():
 
         # All Servers
     
-        self.mainDesk = MainDesk.MainDesk(self.mdm, self.mdM, 'MD', self.exam)
+        self.mainDesk = MainDesk.MainDesk(self.mdm, self.mdM, 'MD')
         self.MDServerQueue = deque()
         self.MDwaitTime = 0
         self.MDmaxQueueLengths = 0
@@ -82,17 +85,91 @@ class Simulation():
         self.BOwaitTime = 0
         self.BOmaxQueueLengths = 0     
 
-        # self.mainDesk = MainDesk.MainDesk()
-        if self.exam: # If True, Exam, else random.
-            for i in range(2):
-                self.DLServers.append(Server.Server(self.dlm, self.dlM, 'DL' + str(i), self.exam))
-                self.VRServers.append(Server.Server(self.vrm, self.vrM, 'VR' + str(i), self.exam))
-            self.BOServers.append(Server.Server(self.bom, self.boM, "BO0", self.exam))
+        # Service all queues
+        for i in range(self.numDL):
+            self.DLServers.append(Server.Server(self.dlm, self.dlM, 'DL' + str(i)))
+
+        for i in range(self.numVR):
+            self.VRServers.append(Server.Server(self.vrm, self.vrM, 'VR' + str(i)))
+
+        for i in range(self.numBO):
+            self.BOServers.append(Server.Server(self.bom, self.boM, "BO0"))
 
         else:
             print("not implemented yet!!!")
 
-    
+    def printAllServerTimes(self):
+
+        print("MainDesk")
+        self.mainDesk.printServerTimes()
+
+        for i in range(self.numDL):
+            print("DL Server %s." %(self.DLServers[i].getServerID()))
+            self.DLServers[i].printServerTimes()
+
+        for i in range(self.numVR):
+            print("VR Server %s." %(self.DLServers[i].getServerID()))
+            self.VRServers[i].printServerTimes()
+
+        for i in range(self.numBO):
+            print("BO Server %s." %(self.DLServers[i].getServerID()))
+            self.BOServers[i].printServerTimes()
+            print("\n")
+
+    def printAllDistributions(self):
+
+        print("MainDesk")
+        self.mainDesk.printDistribution()
+
+        for i in range(self.numDL):
+            print("DL Server %s." %(self.DLServers[i].getServerID()))
+            self.DLServers[i].printDistribution()
+
+        for i in range(self.numVR):
+            print("VR Server %s." %(self.DLServers[i].getServerID()))
+            self.VRServers[i].printDistribution()
+
+        for i in range(self.numBO):
+            print("BO Server %s." %(self.DLServers[i].getServerID()))
+            self.BOServers[i].printDistribution()
+            print("\n")
+
+
+    def printAllAverageTimes(self):
+
+        print("MainDesk")
+        self.mainDesk.printAverageServeTime()
+
+        for i in range(self.numDL):
+            print("DL Server %s." %(self.DLServers[i].getServerID()))
+            self.DLServers[i].printAverageServeTime()
+
+        for i in range(self.numVR):
+            print("VR Server %s." %(self.DLServers[i].getServerID()))
+            self.VRServers[i].printAverageServeTime()
+
+        for i in range(self.numBO):
+            print("BO Server %s." %(self.DLServers[i].getServerID()))
+            self.BOServers[i].printAverageServeTime()
+            print("\n")
+
+    def printAllServedCustomerPerServer(self):
+
+        print("MainDesk")
+        self.mainDesk.printCustomersServed()
+
+        for i in range(self.numDL):
+            print("DL Server %s." %(self.DLServers[i].getServerID()))
+            self.DLServers[i].printCustomersServed()
+
+        for i in range(self.numVR):
+            print("VR Server %s." %(self.DLServers[i].getServerID()))
+            self.VRServers[i].printCustomersServed()
+
+        for i in range(self.numBO):
+            print("BO Server %s." %(self.DLServers[i].getServerID()))
+            self.BOServers[i].printCustomersServed()
+            print("\n")
 
     def startSim(self, name):
 
@@ -131,20 +208,14 @@ class Simulation():
                 print("appending to BO, new size %d." % (len(self.BOServerQueue)))
 
             # Service all queues
-            for i in range(len(self.DLServers)):
+            for i in range(self.numDL):
                 self.DLServers[i].serveTheCustomer()
 
-            for i in range(len(self.VRServers)):
+            for i in range(self.numVR):
                 self.VRServers[i].serveTheCustomer()
 
-            for i in range(len(self.BOServers)):
+            for i in range(self.numBO):
                 self.BOServers[i].serveTheCustomer()
-
-
-
-
-
-
 
             if self.custArrival[myIter] == self.simClock:
 
@@ -175,9 +246,9 @@ class Simulation():
                     print('\n')
                     customer = self.DLServerQueue.popleft()
                     start, stop = self.DLServers[i].service(self.simClock, customer)
-                    print(customer)
-                    print(start)
-                    print(stop)
+                    # print(customer)
+                    # print(start)
+                    # print(stop)
                     self.FEL.pushEvent(start)
                     self.FEL.pushEvent(stop)
                     self.DLServers[i].serveTheCustomer()
@@ -189,10 +260,10 @@ class Simulation():
                     print('\n')
                     customer = self.VRServerQueue.popleft()
                     start, stop = self.VRServers[i].service(self.simClock, customer)
-                    print(customer)
-                    print("here's the bug for vr")
-                    print(start)
-                    print(stop)
+                    # print(customer)
+                    # print("here's the bug for vr")
+                    # print(start)
+                    # print(stop)
                     self.FEL.pushEvent(start)
                     self.FEL.pushEvent(stop)
                     self.VRServers[i].serveTheCustomer()
@@ -204,10 +275,10 @@ class Simulation():
                     print('\n')
                     customer = self.BOServerQueue.popleft()
                     start, stop = self.BOServers[i].service(self.simClock, customer)
-                    print(customer)
-                    print("here's the bug for bo")
-                    print(start)
-                    print(stop)
+                    # print(customer)
+                    # print("here's the bug for bo")
+                    # print(start)
+                    # print(stop)
                     self.FEL.pushEvent(start)
                     self.FEL.pushEvent(stop)
                     self.BOServers[i].serveTheCustomer()
@@ -220,10 +291,33 @@ class Simulation():
             print("VR server queue = %d" %(len(self.VRServerQueue)))
             print("BO server queue = %d" %(len(self.BOServerQueue)))
 
-            time.sleep(.008)
+            time.sleep(.0001)
             print(self.totalCustomers)
             print(served)
             self.simClock += 1
+            self.timePoints.append(self.simClock)
+
+            dlsNotBusy = 0
+            vrsNotBusy = 0
+            bosNotBusy = 0
+            for i in range(self.numDL):
+                if not self.DLServers[i].getBusyState():
+                    dlsNotBusy += 1
+
+            for i in range(self.numVR):
+                if not self.VRServers[i].getBusyState():
+                    vrsNotBusy += 1
+
+            for i in range(self.numBO):
+                if not self.BOServers[i].getBusyState():
+                    bosNotBusy += 1
+
+            if (dlsNotBusy == self.numDL and vrsNotBusy == self.numVR and bosNotBusy == self.numBO and served == self.totalCustomers):
+                # self.printAllServerTimes()
+                # self.printAllAverageTimes()
+                self.printAllDistributions()
+                self.printAllServedCustomerPerServer()
+                break
             # if (not self.server1.getBusyState() and not self.server2.getBusyState() and self.servedCustomers == self.totalCustomers):
             #     break
 

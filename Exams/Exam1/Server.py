@@ -5,19 +5,18 @@ Server Class
 '''
 import Customers 
 import random as rand
+import numpy as np
 
 class Server(object):
 
-	def __init__(self, mint, maxt, serverID, exam):
-		self.averageServeTime = 0
+	def __init__(self, minTime, maxTime, serverID):
 		self.busy = False
-		self.minTime = mint
-		self.maxTime = maxt
+		self.minTime = minTime
+		self.maxTime = maxTime
 		self.serverID = serverID
 		self.currentServeTime = 0
 		self.serverTimes = []
 		self.servingCustomer = [] # 3 element list
-		self.exam = exam
 
 	def service(self, time, customer):
 		if (self.currentServeTime == 0 and not self.busy):
@@ -47,6 +46,9 @@ class Server(object):
 		# else:
 			# print("Currently not busy.")
 
+	def printCustomersServed(self):
+		print(len(self.serverTimes))
+
 	def getServerID(self):
 		return self.serverID
 
@@ -62,6 +64,8 @@ class Server(object):
 	def toggleBusy(self):
 		self.busy = not self.busy
 
-	def getAverageServeTime(self):
-		return self.averageServeTime
+	def printAverageServeTime(self):
+		print(np.mean(self.serverTimes))
 
+	def printDistribution(self):
+		print("[Min, Max] = [%d, %d]." % (self.minTime, self.maxTime))

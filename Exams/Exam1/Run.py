@@ -12,12 +12,13 @@ import FEL
 
 # Simulation init func - 
 
-# def __init__(self, ctm, ctM, mdm, mdM, dlm, dlM, vrm, vrM, bom, boM, exam, hours(in minutes)):
+# def __init__(self, ctm, ctM, mdm, mdM, dlm, dlM, vrm, vrM, bom, boM, opens, closes, numDL, numVR, numBO):
 
 
-m1 = MainDesk.MainDesk(1,4, 'MD', True)
-s1 = Simulation.Simulation(1,4,   1,4,  10,20,   10,30  ,15,40, True, 480, 450)
-s1.startSim("Please Work")
+
+m1 = MainDesk.MainDesk(1,4, 'MD')
+s1 = Simulation.Simulation(1,4,   1,4,  10,20,   10,30  ,15,40, 480, 450,    2,2,1)
+s1.startSim("Exam Sim One")
 
 
 # myFEL = FEL.FEL()
