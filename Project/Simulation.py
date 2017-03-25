@@ -8,7 +8,7 @@ import Server
 import Customers
 import random as rd
 import matplotlib.pyplot as plt
-
+import FEL
 
 from collections import deque
 
@@ -17,30 +17,14 @@ from collections import deque
 ###
 class Simulation():
 
-    def __init__(self, s1m, s1M, s2m, s2M, numCust, cAm, cAM):
+    def __init__(self, numCust):
 
-        self.simClock = 1
+        self.simClock = 0
+        self.FEL = FEL.FEL()
         # FEL list for now, no proper FEL is in place yet.
         # Represents customers. I'll use a class to represent this later.
-        self.arrivalTimes = [] 
         self.maxQueueLength = 0
 
-        self.waitTime = 0
-        self.queueLengths = []
-
-        self.cAm = cAm
-        self.cAM = cAM
-
-        self.s1m = s1m
-        self.s1M = s1M
-        self.s2m = s2m
-        self.s2M = s2M
-
-        self.server1 = Server.Server(s1m, s1M)
-        self.server1ServerTimes = []
-
-        self.server2 = Server.Server(s2m, s2M)
-        self.server2ServerTimes = []
 
         self.averageQueueLength = 0
         self.queue = deque()

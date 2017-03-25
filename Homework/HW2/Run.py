@@ -11,7 +11,7 @@ import Simulation
 # Simulation init func - 
 # def __init__(self, s1m, s1M, s2m, s2M, numCust, cAm, cAM):
 
-sim1 = Simulation.Simulation(7,8, 3,5, 100, 1,4)
+sim1 = Simulation.Simulation(3,4, 3,5, 10000, 1,4)
 sim1.startSim("1")
 '''
 sim1 Results - Customers are arriving relatively fast. Server Two services customers very quickly to the point significant
@@ -27,7 +27,7 @@ Server Two is very productive at servicing in this simulation, which means Serve
 can be moved elsewhere. Steady state is achieved as it appraoches hovers around 2 to 3 customers in the queue at any time. 
 '''
 
-sim2 = Simulation.Simulation(7,8, 3,5, 100, 1,3)
+sim2 = Simulation.Simulation(7,8, 6,8, 10000, 1,3)
 sim2.startSim("2")
 '''
 sim2 Results - With just a hundred customers, the queue (line) rapidly builds up as the servers cannot service
@@ -72,7 +72,7 @@ good test test!
 '''
 
 
-sim5 = Simulation.Simulation(3,5, 3,5, 100, 1,4)
+sim5 = Simulation.Simulation(3,5, 3,5, 100, 1,2)
 sim5.startSim("5")
 '''
 Simple, Fun Test.
