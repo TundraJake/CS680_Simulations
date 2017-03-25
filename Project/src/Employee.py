@@ -3,6 +3,7 @@ Jacob McKenna
 UAF CS 680 Advanced Discrete Event Simulation 
 Employee Class
 '''
+#
 import Customer 
 import random as rand
 import numpy as np
