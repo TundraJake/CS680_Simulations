@@ -11,13 +11,13 @@ import names
 
 class Employee(object):
 
-	def __init__(self):
+	def __init__(self, ID):
 		self.busy = False
 		self.firstName = names.get_first_name()
 		self.lastName = names.get_last_name()
 		self.minTime = rand.randint(1,5)
 		self.maxTime = self.minTime + rand.randint(1,5)
-		self.ID = 0
+		self.ID = ID
 		self.currentServeTime = 0
 		self.serverTimes = []
 		self.servingCustomer = [] # 3 element list
@@ -29,8 +29,8 @@ class Employee(object):
 			self.currentServeTime = rand.randint(self.minTime, self.maxTime)
 			self.serverTimes.append(self.currentServeTime)
 			self.servingCustomer = customer
-			# print("Servicing customer %s at %s" %(self.servingCustomer[1], self.serverID))
-			return [time, self.ID, 'start'], [time + self.currentServeTime, self.ID, 'stop']
+			print("Servicing customer %s at %s" %(self.servingCustomer[1], self.ID))
+			# return [time, self.ID, 'start'], [time + self.currentServeTime, self.ID, 'stop']
 
 	__service = service
 			# print("This is the current server time %d." %(self.currentServeTime))

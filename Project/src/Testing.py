@@ -6,6 +6,7 @@ Employee Class
 
 import Employee 
 
-e = Employee.Employee()
+e = Employee.Employee('0000')
 
 e.printDistribution()
+e.service(3, 'test')
