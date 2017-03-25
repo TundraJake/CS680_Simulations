@@ -10,3 +10,4 @@ e = Employee.Employee('0000')
 
 e.printDistribution()
 e.service(3, 'test')
+e.service(3, 'test')
