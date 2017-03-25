@@ -1,19 +1,22 @@
 '''
 Jacob McKenna
-UAF CS 680 Discrete Event Simulation 
-Server Class 
+UAF CS 680 Advanced Discrete Event Simulation 
+Employee Class
 '''
 import Customer 
 import random as rand
 import numpy as np
+import names
 
-class Server(object):
+class Employee(object):
 
-	def __init__(self, minTime, maxTime, serverID):
+	def __init__(self):
 		self.busy = False
-		self.minTime = minTime
-		self.maxTime = maxTime
-		self.serverID = serverID
+		self.firstName = names.get_first_name()
+		self.lastName = names.get_last_name()
+		self.minTime = rand.randint(1,5)
+		self.maxTime = self.minTime + rand.randint(1,5)
+		self.ID = 0
 		self.currentServeTime = 0
 		self.serverTimes = []
 		self.servingCustomer = [] # 3 element list
@@ -26,7 +29,7 @@ class Server(object):
 			self.serverTimes.append(self.currentServeTime)
 			self.servingCustomer = customer
 			# print("Servicing customer %s at %s" %(self.servingCustomer[1], self.serverID))
-			return [time, self.serverID, 'start'], [time + self.currentServeTime, self.serverID, 'stop']
+			return [time, self.ID, 'start'], [time + self.currentServeTime, self.ID, 'stop']
 
 	__service = service
 			# print("This is the current server time %d." %(self.currentServeTime))
@@ -40,7 +43,7 @@ class Server(object):
 			# print("Server is busy.")
 
 		elif (self.currentServeTime == 0 and self.busy): 
-			# print("Finished Serving, not busy anymore for %s." %(self.serverID))
+			# print("Finished Serving, not busy anymore for %s." %(self.ID))
 			self.toggleBusy() # Not busy anymore.
 			return 0
 
@@ -59,10 +62,10 @@ class Server(object):
 		return self.utilTime
 
 	def printCustomersServed(self):
-		print("Server %s serviced %d custommers."%(self.serverID, len(self.serverTimes)))
+		print("Server %s serviced %d custommers."%(self.ID, len(self.serverTimes)))
 
 	def getServerID(self):
-		return self.serverID
+		return self.ID
 
 	def printServerTimes(self): ### Debug Function ###
 		print(self.serverTimes)
@@ -80,4 +83,4 @@ class Server(object):
 		print(np.mean(self.serverTimes))
 
 	def printDistribution(self):
-		print("%s distribution for [Min, Max] = [%d, %d]." % (self.serverID, self.minTime, self.maxTime))
+		print("%s distribution for [Min, Max] = [%d, %d]." % (self.ID, self.minTime, self.maxTime))
