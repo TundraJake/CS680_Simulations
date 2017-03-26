@@ -38,4 +38,3 @@ class Account(object):
 	def getBalance(self):
 
 		return self.__balance
-
