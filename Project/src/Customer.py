@@ -18,14 +18,6 @@ class Customer(object):
 		self.custArrMin = mint
 		self.custArrMax = maxt
 
-		### Generates the customer arrival times.
-		clock = 0 
-		while clock < close:			
-			time = rd.randint(self.custArrMin, self.custArrMax)
-			clock += time 
-			if clock < close:
-				self.clockTimes.append(clock)
-
 
 	### Debug Functions ###
 
