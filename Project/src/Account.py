@@ -26,7 +26,7 @@ class Account(object):
 
 		if (self.__balance - amount) < 0:
 
-			print("Cannot withdraw more than you have")
+			print("Insufficient Funds")
 			return 0
 
 		else:
@@ -38,3 +38,4 @@ class Account(object):
 	def getBalance(self):
 
 		return self.__balance
+
