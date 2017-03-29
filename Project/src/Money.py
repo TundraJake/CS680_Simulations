@@ -21,4 +21,4 @@ class Money(object):
 		self.__fifties = rand.randint(0, 2)
 		self.__hundreds = rand.randint(0, 1)
 
-
+		 
