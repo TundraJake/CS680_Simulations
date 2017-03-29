@@ -5,6 +5,7 @@ Account Class
 '''
 
 import random as rand
+import Account
 
 class Account(object):
 

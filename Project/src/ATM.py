@@ -11,5 +11,5 @@ class ATM(object):
 
 	def __init__(self):
 
-		self.atmNum = rand.randint(1000, 3000)
-		
+		self.atmNumber = rand.randint(1000, 3000)
+		self.

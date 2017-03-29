@@ -13,6 +13,10 @@ t.service(3, 'test')
 t.service(3, 'test')
 
 
+print(t.getFirstName())
+print(t.getLastName())
+print(t.getFullName())
+
 a = Account.Account(100)
 
 a.deposit(100.00)

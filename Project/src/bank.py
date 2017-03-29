@@ -13,6 +13,3 @@ class Bank(object):
 		self.employees = []
 		self.atms = []
 
-
-
-

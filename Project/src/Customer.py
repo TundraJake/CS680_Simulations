@@ -10,6 +10,7 @@ the customers.
 '''
 import random as rd
 from collections import deque
+
 class Customer(object):
 
 	def __init__(self, close, mint, maxt):
@@ -17,7 +18,6 @@ class Customer(object):
 		self.clockTimes = deque()
 		self.custArrMin = mint
 		self.custArrMax = maxt
-
 
 	### Debug Functions ###
 

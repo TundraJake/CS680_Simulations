@@ -12,24 +12,24 @@ import names
 class Employee(object):
 
 	def __init__(self, ID):
-		self.busy = False
-		self.firstName = names.get_first_name()
-		self.lastName = names.get_last_name()
-		self.minTime = rand.randint(1,5)
-		self.maxTime = self.minTime + rand.randint(1,5)
-		self.ID = ID
-		self.currentServeTime = 0
-		self.serverTimes = []
-		self.servingCustomer = [] # 3 element list
-		self.utilTime = []
+		self.__busy = False
+		self.__firstName = names.get_first_name()
+		self.__lastName = names.get_last_name()
+		self.__minTime = rand.randint(1,5)
+		self.__maxTime = self.__minTime + rand.randint(1,5)
+		self.__ID = ID
+		self.__currentServeTime = 0
+		self.__serverTimes = []
+		self.__servingCustomer = [] # 3 element list
+		self.__utilTime = []
 
 	def service(self, time, customer):
-		if (self.currentServeTime == 0 and not self.busy):
+		if (self.__currentServeTime == 0 and not self.__busy):
 			self.toggleBusy() # Serving
-			self.currentServeTime = rand.randint(self.minTime, self.maxTime)
-			self.serverTimes.append(self.currentServeTime)
-			self.servingCustomer = customer
-			print("Servicing customer %s at %s" %(self.servingCustomer[1], self.ID))
+			self.__currentServeTime = rand.randint(self.__minTime, self.__maxTime)
+			self.__serverTimes.append(self.__currentServeTime)
+			self.__servingCustomer = customer
+			# print("Servicing customer %s at %s" %(self.servingCustomer[1], self.ID))
 			# return [time, self.ID, 'start'], [time + self.currentServeTime, self.ID, 'stop']
 
 	__service = service
@@ -38,12 +38,12 @@ class Employee(object):
 		# 	print("Service already started.")
 
 	def serveTheCustomer(self):
-		if (self.currentServeTime != 0):
-			self.currentServeTime -= 1
+		if (self.__currentServeTime != 0):
+			self.__currentServeTime -= 1
 			return 1
 			# print("Server is busy.")
 
-		elif (self.currentServeTime == 0 and self.busy): 
+		elif (self.__currentServeTime == 0 and self.__busy): 
 			# print("Finished Serving, not busy anymore for %s." %(self.ID))
 			self.toggleBusy() # Not busy anymore.
 			return 0
@@ -56,32 +56,41 @@ class Employee(object):
 		# else:
 			# print("Currently not busy.")
 
+	def getFirstName(self):
+		return self.__firstName
+
+	def getLastName(self):
+		return self.__lastName
+
+	def getFullName(self):
+		return self.__firstName + " " + self.__lastName
+
 	def appendUtilTimes(self, value):
-		self.utilTime.append(value)
+		self.__utilTime.append(value)
 
 	def getUtilTimes(self):
-		return self.utilTime
+		return self.__utilTime
 
 	def printCustomersServed(self):
-		print("Server %s serviced %d custommers."%(self.ID, len(self.serverTimes)))
+		print("Server %s serviced %d custommers."%(self.__ID, len(self.__serverTimes)))
 
 	def getServerID(self):
-		return self.ID
+		return self.__ID
 
 	def printServerTimes(self): ### Debug Function ###
-		print(self.serverTimes)
+		print(self.__serverTimes)
 
 	def getServerTimes(self):
-		return self.serverTimes
+		return self.__serverTimes
 
 	def getBusyState(self):
-		return self.busy
+		return self.__busy
 
 	def toggleBusy(self):
-		self.busy = not self.busy
+		self.__busy = not self.__busy
 
 	def printAverageServeTime(self):
-		print(np.mean(self.serverTimes))
+		print(np.mean(self.__serverTimes))
 
 	def printDistribution(self):
-		print("%s distribution for [Min, Max] = [%d, %d]." % (self.ID, self.minTime, self.maxTime))
+		print("%s distribution for [Min, Max] = [%d, %d]." % (self.__ID, self.__minTime, self.__maxTime))
