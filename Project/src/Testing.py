@@ -3,25 +3,45 @@ Jacob McKenna
 UAF CS 680 Advanced Discrete Event Simulation 
 Employee Class
 '''
-
 import Employee 
-import Account
-t = Employee.Employee('10-1234567')
-
-t.printDistribution()
-t.service(3, 'test')
-t.service(3, 'test')
+import Product
 
 
-print(t.getFirstName())
-print(t.getLastName())
-print(t.getFullName())
+l1,l2,l3 = Product.returnSetup()
 
-a = Account.Account(100)
+for i in l1:
+	print(i)
 
-a.deposit(100.00)
-print(a.getBalance())
-a.withdraw(50.00)
-print(a.getBalance())
-a.withdraw(500.00)
+for i in l2:
+	print(i)
 
+for i in l3:
+	print(i)
+
+# p = Product.PRODUCTS
+# prods = []
+
+# for i, v in p.items():
+# 	prods.append(Product.Product(i,v))
+
+
+# p = Product.WRAPPERS
+# prods = []
+
+# for i,v  in p.items():
+# 	print(i,v)
+
+
+
+# print()
+# for i, v in p.items():
+# 	prods.append(Product.Wrapper(i,v))
+
+# for i in prods:
+# 	print(i.getName())
+
+
+# w = Product.WRAPPERS
+
+# for k,v in w.items():
+# 	print(k, v)
