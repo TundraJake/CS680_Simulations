@@ -14,9 +14,16 @@ PRODUCTS = {
 	'Chicken': [40.0, 32, 1.25, 101.23],
 	'Nacho Cheese': [37.5, 10, 3.75, 82.41],
 	'Cheese': [30.0, 6, 5.0, 47.52],
-	'Three-Cheese': [30.0, 6, 5.0, 68.40],
+	'Three Cheese': [30.0, 6, 5.0, 68.40],
 	'Lettuce': [30.0, 6, 5.0, 42.42],
-	'Tomatos': [20.0, 4, 5.0, 35.78]
+	'Tomatos': [20.0, 4, 5.0, 35.78],
+
+	# 'name': [lbs, number of bags, number of shells, costs]
+	'Hard Shell Taco Shell': [15.0, 6, 40, 37.56],
+	'Six Inch Tortillas': [30.0, 24, 24, 57.23],
+	'Ten Inch Tortillas': [30.0, 20, 12, 62.32],
+	'Twelve Inch Tortillas': [30.0, 12, 6, 56.91]
+
 
 }
 
