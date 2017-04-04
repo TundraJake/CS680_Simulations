@@ -9,14 +9,9 @@ import Product
 
 l1,l2,l3 = Product.returnSetup()
 
-for i in l1:
-	print(i)
-
-for i in l2:
-	print(i)
-
-for i in l3:
-	print(i)
+print(len(l1))
+print(len(l2))
+print(len(l3))
 
 # p = Product.PRODUCTS
 # prods = []
