@@ -1,6 +1,6 @@
 '''
 Jacob McKenna
-UAF CS 680 Discrete Event Simulation 
+UAF CS680 Discrete Event Simulation 
 MainDesk Class - First contact for client, sends them off on to another queue.
 '''
 
@@ -9,8 +9,8 @@ import Server
 
 class MainDesk(Server.Server):
 
-	def __init__(self, mint, maxt, serverID):
-		super().__init__(mint, maxt, serverID)
+	def __init__(self, minTime, maxTime, serverID):
+		super().__init__(minTime, maxTime, serverID)
 		self.queue1Dist = 0 
 		self.queue2Dist = 0 
 		self.queue3Dist = 0 
@@ -52,29 +52,28 @@ class MainDesk(Server.Server):
 		rval = rand.randint(1,10)
 
 		if rval >= 1 and rval <= 4:
-			self.servingCustomer[2] = 'DL Queue'
+			result = 'DL Queue'
 
 		elif rval >= 5 and rval <= 8:
-			self.servingCustomer[2] = 'VR Queue'
+			result = 'VR Queue'
 
 		elif rval >= 9 and rval <= 10:
-		 	self.servingCustomer[2] = 'BO Queue'
+		 	result = 'BO Queue'
 
-		return self.servingCustomer
+		return result
 
 	def serveTheCustomer(self, time):
 		if (self.currentServeTime != 0):
 			self.currentServeTime -= 1
-			return [0,0, '']
+			return ''
 
 		elif (self.currentServeTime == 0 and self.busy):
 			self.toggleBusy()
-			self.servingCustomer[0] = time
 			assignment = self.examQueueAssignment()
 			return assignment
 
 		else:
-			return [0,0, '']
+			return ''
 
 
 

@@ -11,7 +11,7 @@ import Simulation
 # Simulation init func - 
 # def __init__(self, s1m, s1M, s2m, s2M, numCust, cAm, cAM):
 
-sim1 = Simulation.Simulation(3,4, 3,5, 10000, 1,4)
+sim1 = Simulation.Simulation(3,4, 3,5, 100, 1,4)
 sim1.startSim("1")
 '''
 sim1 Results - Customers are arriving relatively fast. Server Two services customers very quickly to the point significant
@@ -27,8 +27,8 @@ Server Two is very productive at servicing in this simulation, which means Serve
 can be moved elsewhere. Steady state is achieved as it appraoches hovers around 2 to 3 customers in the queue at any time. 
 '''
 
-sim2 = Simulation.Simulation(7,8, 6,8, 10000, 1,3)
-sim2.startSim("2")
+# sim2 = Simulation.Simulation(7,8, 6,8, 10000, 1,3)
+# sim2.startSim("2")
 '''
 sim2 Results - With just a hundred customers, the queue (line) rapidly builds up as the servers cannot service
 each customer quickly. Customers are arriving too fast. 
@@ -42,8 +42,8 @@ each customer quickly. Customers are arriving too fast.
 Servers were constantly busy due to both having high service times while customers were rapidly arriving. 
 '''
 
-sim3 = Simulation.Simulation(7,8, 1,2, 100, 1,5)
-sim3.startSim("3")
+# sim3 = Simulation.Simulation(7,8, 1,2, 100, 1,5)
+# sim3.startSim("3")
 '''
 sim3 Results - There is even more downtime for each server. Server One compared to simulation 2, dropped a few percent
 whele Server Two droped at least double on the runs. Queue times were relatively short due to the fact servicing and 
@@ -57,8 +57,8 @@ the mild customer arrival rate.
 '''
 
 
-sim4 = Simulation.Simulation(2,5, 4,10, 100, 5,8)
-sim4.startSim("4")
+# sim4 = Simulation.Simulation(2,5, 4,10, 100, 5,8)
+# sim4.startSim("4")
 '''
 sim3 Results - I wanted to show that if customers arrive at such a slow pace that one server can handle them
 quickly, then there is no need for a second server. I broke my code due to division by zero, so it was a
@@ -72,21 +72,21 @@ good test test!
 '''
 
 
-sim5 = Simulation.Simulation(3,5, 3,5, 100, 1,2)
-sim5.startSim("5")
-'''
-Simple, Fun Test.
-'''
+# sim5 = Simulation.Simulation(3,5, 3,5, 100, 1,2)
+# sim5.startSim("5")
+# '''
+# Simple, Fun Test.
+# '''
 
 
-sim6 = Simulation.Simulation(3,5, 3,5, 100, 1,4)
-sim6.startSim("6")
-'''
-Simple, Fun Test.
-'''
+# sim6 = Simulation.Simulation(3,5, 3,5, 100, 1,4)
+# sim6.startSim("6")
+# '''
+# Simple, Fun Test.
+# '''
 
-sim7 = Simulation.Simulation(6,7, 8,11, 100, 3,5)
-sim7.startSim("7")
+# sim7 = Simulation.Simulation(6,7, 8,11, 100, 3,5)
+# sim7.startSim("7")
 '''
 I think this is the best test for steady state. Every other tests shows 1 as the steady state, which is fine. 
 '''

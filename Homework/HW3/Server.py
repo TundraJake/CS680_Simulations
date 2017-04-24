@@ -1,9 +1,8 @@
 '''
 Jacob McKenna
-UAF CS 680 Discrete Event Simulation 
+UAF CS680 AdVanced Discrete Event Simulation 
 Server Class 
 '''
-import Customers 
 import random as rand
 import numpy as np
 
@@ -16,17 +15,16 @@ class Server(object):
 		self.serverID = serverID
 		self.currentServeTime = 0
 		self.serverTimes = []
-		self.servingCustomer = [] # 3 element list
 		self.utilTime = []
 
-	def service(self, time, customer):
+	def service(self):
 		if (self.currentServeTime == 0 and not self.busy):
-			self.toggleBusy() # Serving
 			self.currentServeTime = rand.randint(self.minTime, self.maxTime)
 			self.serverTimes.append(self.currentServeTime)
-			self.servingCustomer = customer
+			self.toggleBusy() # Serving
+			self.serveTheCustomer()
+
 			# print("Servicing customer %s at %s" %(self.servingCustomer[1], self.serverID))
-			return [time, self.serverID, 'start'], [time + self.currentServeTime, self.serverID, 'stop']
 
 	__service = service
 			# print("This is the current server time %d." %(self.currentServeTime))
