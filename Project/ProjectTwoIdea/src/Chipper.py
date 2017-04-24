@@ -8,8 +8,8 @@ import random as rand
 
 class Chipper(Vehicle.Vehicle):
 
-	def __init__(self, employeeMinTime, employeeMaxTime):
-		super().__init__(employeeMinTime, employeeMaxTime)
+	def __init__(self, employeeMinTime, employeeMaxTime, name):
+		super().__init__(employeeMinTime, employeeMaxTime, name)
 		self.patch = ''
 		self.state = 0
 		self.states = {
@@ -22,6 +22,7 @@ class Chipper(Vehicle.Vehicle):
 
 	def startWork(self, road):
 
+		self.totalPatches = len(road.patches) - 1
 		self.patch = road.getPatch(self.currentPatch)
 
 		state = road.getPatch(self.currentPatch).getState()
@@ -44,9 +45,6 @@ class Chipper(Vehicle.Vehicle):
 			self.moveToNextPatch()
 			self.patch.incrementState()
 			return 0 
-
-	def moveToNextPatch(self):
-		self.currentPatch += 1
 
 	def load(self):
 		self.oil = 2000

@@ -8,8 +8,8 @@ import random as rand
 
 class Dumptruck(Vehicle.Vehicle):
 
-	def __init__(self, employeeMinTime, employeeMaxTime):
-		super().__init__(employeeMinTime, employeeMaxTime)
+	def __init__(self, employeeMinTime, employeeMaxTime, name):
+		super().__init__(employeeMinTime, employeeMaxTime, name)
 		self.__load = 0
 		self.state = 0
 		self.states = {

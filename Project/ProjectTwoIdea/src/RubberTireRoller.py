@@ -8,8 +8,8 @@ import random as rand
 
 class RubberTireRoller(Vehicle.Vehicle):
 
-	def __init__(self, employeeMinTime, employeeMaxTime):
-		super().__init__(employeeMinTime, employeeMaxTime)
+	def __init__(self, employeeMinTime, employeeMaxTime, name):
+		super().__init__(employeeMinTime, employeeMaxTime, name)
 		self.patch = ''
 		self.state = 0
 		self.states = {
@@ -22,12 +22,14 @@ class RubberTireRoller(Vehicle.Vehicle):
 
 	def startWork(self, road):
 
+		self.road = road
+		self.totalPatches = len(road.patches) - 1
 		self.patch = road.getPatch(self.currentPatch)
 
 		state = road.getPatch(self.currentPatch).getState()
 
 		if (self.currentWorkTime == 0 and not self.busy and state == 'Chipped'):
-			print("RubberTireRoller started working")
+			# print("RubberTireRoller started working")
 			self.toggleBusy()
 			self.currentWorkTime = rand.randint(self.minTime, self.maxTime)
 			self.patchWorkTimes.append(self.currentWorkTime)
@@ -35,7 +37,7 @@ class RubberTireRoller(Vehicle.Vehicle):
 
 	def work(self):
 		if (self.currentWorkTime != 0):
-			print("RubberTireRoller working")
+			# print("RubberTireRoller working")
 			self.currentWorkTime -= 1
 			return 1
 			
@@ -44,8 +46,5 @@ class RubberTireRoller(Vehicle.Vehicle):
 			self.toggleBusy() # Not busy anymore.
 			self.moveToNextPatch()
 			self.patch.incrementState()
+			self.road.incrementCompletedPatches()
 			return 0 
-
-	def moveToNextPatch(self):
-
-		self.currentPatch += 1

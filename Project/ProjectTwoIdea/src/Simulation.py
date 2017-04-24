@@ -18,12 +18,14 @@ import Road
 import Patch
 
 # Vehicles
-import Dumptruck
-import Oiltruck
-import Chipper
+import time
+import Pickup
 import Ironwolf
 import Grader
-
+import Oiltruck
+import Chipper
+import RubberTireRoller
+import Dumptruck
 
 # Stockpile 
 import Stockpile
@@ -34,35 +36,80 @@ import Stockpile
 class Simulation(object):
 
 	def __init__(self, budget, patches, numDumpTrucks, numOilTrucks):
-		self.__simClock = 0
 
-		self.__budget = budget
-		self.__road = Road.Road(patches)
+		self.simClock = 0
+		self.budget = budget
 
-		self.__numDumpTrucks = []
-		for _ in range(numDumpTrucks):
-			self.__numDumpTrucks.append(Dumptruck.Dumptruck(10,20))
+		self.road = Road.Road(patches)
 
-		self.__numOilTrucks = []
-		for _ in range(numOilTrucks):
-			self.__numOilTrucks = append(Oiltruck.Oiltruck(30,40))
+		self.numDumpTrucks = []
+		for i in range(numDumpTrucks):
+			self.numDumpTrucks.append(Dumptruck.Dumptruck(10,20,'Dumptruck' + str(i + 1)))
 
-		self.__chipper = Chipper.Chipper(30,40)
-		self.__ironwolf = Ironwolf.Ironwolf(10,30)
-		self.__grader = Grader.Grader(40,80)
-		
+		self.numOilTrucks = []
+		for i in range(numOilTrucks):
+			self.numOilTrucks.append(Oiltruck.Oiltruck(30,40,'Oil '+str(i + 1)))
+
+		self.pickup = Pickup.Pickup(3,6, 'Pickup')
+		self.ironwolf = Ironwolf.Ironwolf(10,30, 'Ironwolf')
+		self.grader = Grader.Grader(40,80, 'Grader')
+		self.chipper = Chipper.Chipper(30,40, 'Chipper')
+		self.rtr = RubberTireRoller.RubberTireRoller(15,30, 'RTR')
+
+
+	
 	def startSim(self, name):
 
 		# print(self.arrivalTimes) # Testing times, functions correctly. 
 		myIter = 0 
-		served = 0
+		
 
-		while 1:
+		while self.road.getCompletedPatches() != self.road.getNumPatches():
 
-			time.sleep(1)
-			self.__simClock += 1
+			if (not self.pickup.busy):
+				self.pickup.startWork(self.road)
+
+			if (not self.ironwolf.busy):
+				self.ironwolf.startWork(self.road)
+			
+			if (not self.grader.busy):
+				self.grader.startWork(self.road)
+
+			for i in range(len(self.numOilTrucks)):
+				if (not self.numOilTrucks[i].busy):
+					self.numOilTrucks[i].startWork(self.road)
+
+			if (not self.chipper.busy):
+				self.chipper.startWork(self.road)
+
+			if (not self.rtr.busy):
+				self.rtr.startWork(self.road)
+
+			self.pickup.work()
+			self.grader.work()
+			self.ironwolf.work()
+		
+			for i in range(len(self.numOilTrucks)):
+				self.numOilTrucks[i].work()
+
+			self.chipper.work()
+			self.rtr.work()
+
+			# print(self.road.patches[0].getState(), " patch 1")
+			# print(self.road.patches[1].getState(), " patch 2")
+			# print(self.road.patches[2].getState(), " patch 3")
+			# print(self.road.patches[3].getState(), " patch 4")
+			# print(self.road.patches[4].getState(), " patch 5")
+
+			print(self.road.getCompletedPatches())
 
 
+			time.sleep(.0001)
+			self.simClock += 1
+		print(self.simClock, "Total Time")
+
+s = Simulation(5000000, 100, 3, 1)
+s.startSim("test sim")
 
 
 

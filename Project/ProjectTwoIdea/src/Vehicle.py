@@ -6,26 +6,12 @@ Class: Vehicle
 
 import random as rand
 
-# VEHICLES ={
-	
-# 	# name 				: [Fuel Tank Amount, Cost Per Hour]
-# 	'Dump Truck'		: [100.0, 75.50],
-# 	'Rubber Tire Roller': [80.0, 60.50],
-# 	'Steel Drum Roller'	: [80.0, 75.0],
-# 	'M Grader'			: [80.0, 75.0],
-# 	'Water Truck'		: [140.0, 75.0],
-# 	'Chipper'			: [80.0, 89.50],
-
-# 	'Ford F150 Pickup'	: [30.0, 53.0,],
-
-# }
-
 
 class Vehicle(object):
 
-	def __init__(self, employeeMinTime, employeeMaxTime):
+	def __init__(self, employeeMinTime, employeeMaxTime, name):
 		self.busy = False
-		self.name = ''
+		self.name = name
 		self.fuelTank = 0
 		self.currentFuel = 0
 		self.currentWorkTime = 0
@@ -33,6 +19,7 @@ class Vehicle(object):
 		self.maxTime = employeeMaxTime
 		self.patchWorkTimes = []
 		self.currentPatch = 0
+		self.totalPatches = 0
 
 
 	# def startWork(self):
@@ -62,8 +49,9 @@ class Vehicle(object):
 	def toggleBusy(self):
 		self.busy = not self.busy
 
-
-
+	def moveToNextPatch(self):
+		if (self.totalPatches != self.currentPatch):
+			self.currentPatch += 1	
 
 
 

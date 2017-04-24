@@ -9,19 +9,20 @@ import random as rand
 
 class Pickup(Vehicle.Vehicle):
 
-	def __init__(self, employeeMinTime, employeeMaxTime):
-		super().__init__(employeeMinTime, employeeMaxTime)
+	def __init__(self, employeeMinTime, employeeMaxTime, name):
+		super().__init__(employeeMinTime, employeeMaxTime, name)
 		self.patch = ''
 		self.state = 0
 		self.states = {
 					
 					'Parked':0,
 					'Marking':1
-					
+
 				}
 
 	def startWork(self, road):
 
+		self.totalPatches = len(road.patches) - 1
 		self.patch = road.getPatch(self.currentPatch)
 
 		if (self.currentWorkTime == 0 and not self.busy and self.patch.getState() == 'Damaged'):
@@ -43,6 +44,3 @@ class Pickup(Vehicle.Vehicle):
 			self.patch.incrementState()
 			return 0 
 
-	def moveToNextPatch(self):
-		if 
-		self.currentPatch += 1
