@@ -23,6 +23,7 @@ class Dumptruck(Vehicle.Vehicle):
 				}
 
 	def load(self):
+		self.state = 2
 		self.__load = 300
 
 	def dump(self):
