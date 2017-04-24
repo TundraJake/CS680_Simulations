@@ -11,6 +11,14 @@ class Chipper(Vehicle.Vehicle):
 	def __init__(self, employeeMinTime, employeeMaxTime):
 		super().__init__(employeeMinTime, employeeMaxTime)
 		self.patch = ''
+		self.state = 0
+		self.states = {
+					
+					'Parked':0,
+					'Mobing':1,
+					'Chipping':2
+				
+				}
 
 	def startWork(self, road):
 

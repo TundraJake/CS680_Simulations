@@ -12,6 +12,13 @@ class Pickup(Vehicle.Vehicle):
 	def __init__(self, employeeMinTime, employeeMaxTime):
 		super().__init__(employeeMinTime, employeeMaxTime)
 		self.patch = ''
+		self.state = 0
+		self.states = {
+					
+					'Parked':0,
+					'Marking':1
+					
+				}
 
 	def startWork(self, road):
 

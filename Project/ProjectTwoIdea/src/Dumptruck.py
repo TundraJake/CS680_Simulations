@@ -14,10 +14,11 @@ class Dumptruck(Vehicle.Vehicle):
 		self.state = 0
 		self.states = {
 					
-					'Hauling':0,
-					'Loading':1,
-					'Loaded':2, 
-					'Dumping':3
+					'Parked':0,
+					'Mobing':1,
+					'Loading':2,
+					'Loaded':3, 
+					'Dumping':4
 				
 				}
 
