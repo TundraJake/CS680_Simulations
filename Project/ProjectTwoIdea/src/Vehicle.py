@@ -21,7 +21,8 @@ class Vehicle(object):
 		self.maxTime = employeeMaxTime
 
 		self.patchWorkTimes = []
-		self.utilGraphItem = []
+		self.utilGraphList = []
+		self.stateGraphList = []
 
 		self.currentPatch = 0
 		self.totalPatches = 0
@@ -31,6 +32,9 @@ class Vehicle(object):
 
 		self.patch = ''
 		self.state = 0
+
+		self.utilDir = ''
+		self.stateDir = ''
 
 	def getState(self):
 		return self.state
@@ -44,21 +48,23 @@ class Vehicle(object):
 
 	def genUtilGraphs(self, simNumName):
 		
-		plt.plot(self.utilGraphItem)
+		plt.plot(self.utilGraphList)
+		plt.ylim([0,1])
 		plt.title(self.name + ' Utilization Graph')
 		# l1 = plt.axvline(x=self.opens, color='b', label='PRE CLOSE (7.5 hrs)')
 		# l2 = plt.axvline(x=self.closes, color='r', label='CLOSED (8 hrs)')
 		# plt.legend(handles = [l1, l2], loc='upper center', bbox_to_anchor=(0.5,-0.1))
 		plt.xlabel("time(m)")
 		plt.ylabel("Percent Busy")
-		plt.savefig('../graphs/' + str(simNumName) + "_for_" + str(self.name) + ".png", bbox_inches='tight')
+		plt.savefig('../graphs/' + str(simNumName) + '/util/'  + str(self.name) + ".png", bbox_inches='tight')
 		plt.clf()
 
-	def generateWaitAndUtilizationTime(self, simClock):
-
-		### Wait Times ###
+	def genUtilTime(self, simClock):
+		
 		holder = (self.utilTime / simClock)
-		self.utilGraphItem.append(holder)
+		self.utilGraphList.append(holder)
+
+	def generateStateGraphs(self, simClocks):
 
 
 

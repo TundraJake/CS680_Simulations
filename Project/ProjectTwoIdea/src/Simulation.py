@@ -3,7 +3,7 @@ Jacob McKenna
 UAF CS680 Advanced Discrete Event Simulation 
 Class: Sumulation
 '''
-
+import os
 import time # Used for the clock (seconds).
 import random as rand
 import matplotlib.pyplot as plt
@@ -92,31 +92,31 @@ class Simulation(object):
 		self.chipper.work()
 		self.rtr.work()
 	
-	def genGraphs(self, simNumName):
+	def genGraphs(self, simName):
 
-		self.pickup.genUtilGraphs(simNumName)
-		self.grader.genUtilGraphs(simNumName)
-		self.ironwolf.genUtilGraphs(simNumName)
+		self.pickup.genUtilGraphs(simName)
+		self.grader.genUtilGraphs(simName)
+		self.ironwolf.genUtilGraphs(simName)
 
 		for i in self.numOilTrucks:
-			i.genUtilGraphs(simNumName)
+			i.genUtilGraphs(simName)
 
-		self.chipper.genUtilGraphs(simNumName)
-		self.rtr.genUtilGraphs(simNumName)
+		self.chipper.genUtilGraphs(simName)
+		self.rtr.genUtilGraphs(simName)
 
 	def incrementUtil(self, simClock):
 
-		self.pickup.generateWaitAndUtilizationTime(simClock)
-		self.grader.generateWaitAndUtilizationTime(simClock)
-		self.ironwolf.generateWaitAndUtilizationTime(simClock)
+		self.pickup.genUtilTime(simClock)
+		self.grader.genUtilTime(simClock)
+		self.ironwolf.genUtilTime(simClock)
 
 		for i in self.numOilTrucks:
-			i.generateWaitAndUtilizationTime(simClock)
+			i.genUtilTime(simClock)
 
-		self.chipper.generateWaitAndUtilizationTime(simClock)
-		self.rtr.generateWaitAndUtilizationTime(simClock)
+		self.chipper.genUtilTime(simClock)
+		self.rtr.genUtilTime(simClock)
 
-	def startSim(self, simNumName):
+	def startSim(self, simName):
 
 		# print(self.arrivalTimes) # Testing times, functions correctly. 
 		myIter = 0 
@@ -140,12 +140,20 @@ class Simulation(object):
 			self.simClock += 1
 			self.incrementUtil(self.simClock)
 
+			directory = '../graphs/'
+			
+		if not os.path.exists(directory + simName):
+			os.makedirs(directory + simName)
+			os.makedirs(directory + simName + '/util/')
+			os.makedirs(directory + simName + '/state/')
 
 		print(self.simClock, "Total Time")
-		self.genGraphs(simNumName)
+		self.genGraphs(simName)
+
+
 
 s = Simulation(5000000, 100, 3, 1)
-s.startSim("test sim")
+s.startSim("Test")
 
 
 
