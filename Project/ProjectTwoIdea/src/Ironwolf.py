@@ -10,8 +10,6 @@ class Ironwolf(Vehicle.Vehicle):
 
 	def __init__(self, employeeMinTime, employeeMaxTime, name):
 		super().__init__(employeeMinTime, employeeMaxTime, name)
-		self.patch = ''
-		self.state = 0
 		self.states = {
 					
 					'Parked':0,
@@ -19,18 +17,6 @@ class Ironwolf(Vehicle.Vehicle):
 					'Grinding':2
 				
 				}
-
-	def startWork(self, road):
-
-		self.totalPatches = len(road.patches) - 1
-		self.patch = road.getPatch(self.currentPatch)
-
-		if (self.currentWorkTime == 0 and not self.busy and self.patch.getState() == 'Marked'):
-			# print("iron wolf starting work")
-			self.toggleBusy()
-			self.currentWorkTime = rand.randint(self.minTime, self.maxTime)
-			self.patchWorkTimes.append(self.currentWorkTime)
-			self.work()
 
 	def work(self):
 		if (self.currentWorkTime != 0):
@@ -44,5 +30,7 @@ class Ironwolf(Vehicle.Vehicle):
 			self.moveToNextPatch()
 			self.patch.incrementState()
 			return 0 
-
+			
+		else:
+			return 0
 	

@@ -13,6 +13,7 @@ class Road(object):
 
 		### Number Of Patches ###
 		self.patches = []
+		self.patchDistances = []
 		self.numPatches = numPatches
 		self.totalArea = 0
 		self.completePatches = 0
@@ -33,6 +34,15 @@ class Road(object):
 			# start has to be at least 100 feet from the previous patch. 
 			start += rand.randint(100, 2000) 
 
+		# numPatches - 1: N patches, N - 1 inbetween spaces
+		for i in range(numPatches - 1):
+			
+			nextPatch = self.patches[i + 1]
+			previousPatch = self.patches[i]
+
+			self.patchDistances.append(nextPatch.getStart() - previousPatch.getEnd())
+
+
 	def getTotalPatchArea(self):
 		return str(self.totalArea) + " Sqaure Feet"
 
@@ -47,3 +57,11 @@ class Road(object):
 
 	def getCompletedPatches(self):
 		return self.completePatches
+
+# r = Road(100)
+# print(len(r.patchDistances))
+
+# for i in r.patches:
+# 	i.printStartAndEnd()
+
+# print(r.patchDistances)

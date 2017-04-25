@@ -5,7 +5,7 @@ Class: Vehicle
 '''
 
 import random as rand
-
+import matplotlib as plt
 
 class Vehicle(object):
 
@@ -18,33 +18,27 @@ class Vehicle(object):
 		self.minTime = employeeMinTime
 		self.maxTime = employeeMaxTime
 		self.patchWorkTimes = []
+
 		self.currentPatch = 0
 		self.totalPatches = 0
 
+		self.patch = ''
+		self.state = 0
 
-	# def startWork(self):
-	# 	if (self.currentWorkTime == 0 and not self.busy):
-	# 		self.toggleBusy()
-	# 		self.currentWorkTime = rand.randint(self.minTime, self.maxTime)
-	# 		self.patchWorkTimes.append(self.currentWorkTime)
-	# 		self.work()
+	def startWork(self, road):
 
-	# startWork = startWork
+		self.totalPatches = len(road.patches) - 1
+		self.patch = road.getPatch(self.currentPatch)
 
-	def work(self):
-		if (self.currentWorkTime != 0):
-			self.currentWorkTime -= 1
-			return 1
-			
-		elif (self.currentWorkTime == 0 and self.busy): 
-			# print("Finished Serving, not busy anymore for %s." %(self.ID))
-			self.toggleBusy() # Not busy anymore.
-			return 0
+		if (self.currentWorkTime == 0 and not self.busy and self.patch.getState() == 'Damaged'):
+			# print("Pickup work")
+			self.toggleBusy()
+			self.currentWorkTime = rand.randint(self.minTime, self.maxTime)
+			self.patchWorkTimes.append(self.currentWorkTime)
+			self.work()
 
-		else:
-			return 0
-
-	work = work
+	def getState(self):
+		return self.state
 
 	def toggleBusy(self):
 		self.busy = not self.busy
@@ -53,6 +47,23 @@ class Vehicle(object):
 		if (self.totalPatches != self.currentPatch):
 			self.currentPatch += 1	
 
+	# def genUtilGraphs(self):
+		
+	# 	plt.plot(self.patchWorkTimes)
+	# 	plt.title(self.name + ' Utilization Graph')
+	# 	# l1 = plt.axvline(x=self.opens, color='b', label='PRE CLOSE (7.5 hrs)')
+	# 	# l2 = plt.axvline(x=self.closes, color='r', label='CLOSED (8 hrs)')
+	# 	plt.legend(handles = [l1, l2], loc='upper center', bbox_to_anchor=(0.5,-0.1))
+	# 	plt.xlabel("time(m)")
+	# 	plt.ylabel("Average Wait Time")
+	# 	plt.savefig('../graohs/Sim_' + str(simNum) + "_for_MD.png", bbox_inches='tight')
+	# 	plt.clf()
+
+	# def generateWaitAndUtilizationTimeNow(self, simClock):
+
+	# 	### Wait Times ###
+	# 	holder = (self.MDwaitTime / simClock)
+	# 	self.MDServerQueueLengths.append(holder)
 
 
 

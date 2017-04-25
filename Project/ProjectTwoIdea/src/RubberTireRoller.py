@@ -10,8 +10,6 @@ class RubberTireRoller(Vehicle.Vehicle):
 
 	def __init__(self, employeeMinTime, employeeMaxTime, name):
 		super().__init__(employeeMinTime, employeeMaxTime, name)
-		self.patch = ''
-		self.state = 0
 		self.states = {
 					
 					'Parked':0,
@@ -19,21 +17,6 @@ class RubberTireRoller(Vehicle.Vehicle):
 					'Rolling':2
 				
 				}
-
-	def startWork(self, road):
-
-		self.road = road
-		self.totalPatches = len(road.patches) - 1
-		self.patch = road.getPatch(self.currentPatch)
-
-		state = road.getPatch(self.currentPatch).getState()
-
-		if (self.currentWorkTime == 0 and not self.busy and state == 'Chipped'):
-			# print("RubberTireRoller started working")
-			self.toggleBusy()
-			self.currentWorkTime = rand.randint(self.minTime, self.maxTime)
-			self.patchWorkTimes.append(self.currentWorkTime)
-			self.work()
 
 	def work(self):
 		if (self.currentWorkTime != 0):

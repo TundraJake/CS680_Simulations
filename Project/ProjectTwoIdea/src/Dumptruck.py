@@ -10,8 +10,7 @@ class Dumptruck(Vehicle.Vehicle):
 
 	def __init__(self, employeeMinTime, employeeMaxTime, name):
 		super().__init__(employeeMinTime, employeeMaxTime, name)
-		self.__load = 0
-		self.state = 0
+		self.load = 0
 		self.states = {
 					
 					'Parked':0,
@@ -22,9 +21,23 @@ class Dumptruck(Vehicle.Vehicle):
 				
 				}
 
+	def work(self):
+		if (self.currentWorkTime != 0):
+			# print("RubberTireRoller working")
+			self.currentWorkTime -= 1
+			return 1
+			
+		elif (self.currentWorkTime == 0 and self.busy): 
+
+			self.toggleBusy() # Not busy anymore.
+			self.moveToNextPatch()
+			self.patch.incrementState()
+			self.road.incrementCompletedPatches()
+			return 0 
+
 	def load(self):
 		self.state = 2
-		self.__load = 300
+		self.load = 300
 
 	def dump(self):
 		return self.__load

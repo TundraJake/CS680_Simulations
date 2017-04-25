@@ -43,3 +43,9 @@ class Patch(object):
 	def getStart(self):
 		return self.start
 
+	def getEnd(self):
+		return self.end
+
+	# Debug function
+	def printStartAndEnd(self):
+		print('Start is: ', self.start, ' and end is: ', self.end)
