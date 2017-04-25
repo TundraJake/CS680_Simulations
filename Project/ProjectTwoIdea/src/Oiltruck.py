@@ -21,10 +21,24 @@ class Oiltruck(Vehicle.Vehicle):
 				
 				}
 
+	def startWork(self, road):
+
+		self.road = road
+		self.totalPatches = len(road.patches) - 1
+		self.patch = road.getPatch(self.currentPatch)
+
+		if (self.currentWorkTime == 0 and not self.busy and self.patch.getState() == 'Graded'):
+			# print("Pickup work")
+			self.toggleBusy()
+			self.currentWorkTime = rand.randint(self.minTime, self.maxTime)
+			self.patchWorkTimes.append(self.currentWorkTime)
+			self.work()
+
 	def work(self):
 		if (self.currentWorkTime != 0):
 			# print("Oiltruck working")
 			self.currentWorkTime -= 1
+			self.utilTime += 1
 			return 1
 			
 		elif (self.currentWorkTime == 0 and self.busy): 

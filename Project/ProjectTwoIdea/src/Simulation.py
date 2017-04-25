@@ -29,6 +29,7 @@ import Dumptruck
 
 # Stockpile 
 import Stockpile
+import Oiltanker
 
 ### Clock code from following link, 
 ### http://codereview.stackexchange.com/questions/26534/is-there-a-better-way-to-count-seconds-in-python
@@ -56,6 +57,8 @@ class Simulation(object):
 		self.grader = Grader.Grader(40,80, 'Grader')
 		self.chipper = Chipper.Chipper(30,40, 'Chipper')
 		self.rtr = RubberTireRoller.RubberTireRoller(15,30, 'RTR')
+
+		self.stockpile = Stockpile.Stockpile(1300, 0)
 
 	def vehicleStartWork(self):
 
@@ -89,7 +92,31 @@ class Simulation(object):
 		self.chipper.work()
 		self.rtr.work()
 	
-	def startSim(self, name):
+	def genGraphs(self, simNumName):
+
+		self.pickup.genUtilGraphs(simNumName)
+		self.grader.genUtilGraphs(simNumName)
+		self.ironwolf.genUtilGraphs(simNumName)
+
+		for i in self.numOilTrucks:
+			i.genUtilGraphs(simNumName)
+
+		self.chipper.genUtilGraphs(simNumName)
+		self.rtr.genUtilGraphs(simNumName)
+
+	def incrementUtil(self, simClock):
+
+		self.pickup.generateWaitAndUtilizationTime(simClock)
+		self.grader.generateWaitAndUtilizationTime(simClock)
+		self.ironwolf.generateWaitAndUtilizationTime(simClock)
+
+		for i in self.numOilTrucks:
+			i.generateWaitAndUtilizationTime(simClock)
+
+		self.chipper.generateWaitAndUtilizationTime(simClock)
+		self.rtr.generateWaitAndUtilizationTime(simClock)
+
+	def startSim(self, simNumName):
 
 		# print(self.arrivalTimes) # Testing times, functions correctly. 
 		myIter = 0 
@@ -100,18 +127,22 @@ class Simulation(object):
 			self.vehicleStartWork()
 			self.checkWork()
 
-			# print(self.road.patches[0].getState(), " patch 1")
-			# print(self.road.patches[1].getState(), " patch 2")
-			# print(self.road.patches[2].getState(), " patch 3")
-			# print(self.road.patches[3].getState(), " patch 4")
-			# print(self.road.patches[4].getState(), " patch 5")
+			print(self.road.patches[0].getState(), " patch 1")
+			print(self.road.patches[1].getState(), " patch 2")
+			print(self.road.patches[2].getState(), " patch 3")
+			print(self.road.patches[3].getState(), " patch 4")
+			print(self.road.patches[4].getState(), " patch 5")
 
 			print(self.road.getCompletedPatches())
 
 
 			time.sleep(.0001)
 			self.simClock += 1
+			self.incrementUtil(self.simClock)
+
+
 		print(self.simClock, "Total Time")
+		self.genGraphs(simNumName)
 
 s = Simulation(5000000, 100, 3, 1)
 s.startSim("test sim")
