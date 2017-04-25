@@ -5,6 +5,7 @@ Class: Vehicle
 '''
 
 import random as rand
+import math
 import matplotlib.pyplot as plt
 
 class Vehicle(object):
@@ -71,7 +72,7 @@ class Vehicle(object):
 	def genStateGraphs(self, simNumName, xpoints):
 		
 		plt.step(xpoints, self.stateGraphList)
-		plt.xlim([0,100])
+		plt.xlim([0, math.ceil( len (self.stateGraphList / 1000) * 1000 )])
 		plt.title(self.name + ' Utilization Graph')
 		# l1 = plt.axvline(x=self.opens, color='b', label='PRE CLOSE (7.5 hrs)')
 		# l2 = plt.axvline(x=self.closes, color='r', label='CLOSED (8 hrs)')
@@ -81,8 +82,13 @@ class Vehicle(object):
 		plt.savefig('../sims/' + str(simNumName) + '/graphs/state/'  + str(self.name) + ".png", bbox_inches='tight')
 		plt.clf()
 
+
+
 	def changeState(self, newState):
-		self.state = self.states[newState]		
+
+		self.state = self.states[newState]	
+
+
 
 	def appendState(self):
 
