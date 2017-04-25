@@ -46,6 +46,8 @@ class Vehicle(object):
 		if (self.totalPatches != self.currentPatch):
 			self.currentPatch += 1	
 
+
+
 	def genUtilGraphs(self, simNumName):
 		
 		plt.plot(self.utilGraphList)
@@ -56,18 +58,35 @@ class Vehicle(object):
 		# plt.legend(handles = [l1, l2], loc='upper center', bbox_to_anchor=(0.5,-0.1))
 		plt.xlabel("time(m)")
 		plt.ylabel("Percent Busy")
-		plt.savefig('../graphs/' + str(simNumName) + '/util/'  + str(self.name) + ".png", bbox_inches='tight')
+		plt.savefig('../sims/' + str(simNumName) + '/graphs/util/'  + str(self.name) + ".png", bbox_inches='tight')
 		plt.clf()
 
 	def genUtilTime(self, simClock):
-		
+
 		holder = (self.utilTime / simClock)
 		self.utilGraphList.append(holder)
 
-	def generateStateGraphs(self, simClocks):
 
 
+	def genStateGraphs(self, simNumName, xpoints):
+		
+		plt.step(xpoints, self.stateGraphList)
+		plt.xlim([0,100])
+		plt.title(self.name + ' Utilization Graph')
+		# l1 = plt.axvline(x=self.opens, color='b', label='PRE CLOSE (7.5 hrs)')
+		# l2 = plt.axvline(x=self.closes, color='r', label='CLOSED (8 hrs)')
+		# plt.legend(handles = [l1, l2], loc='upper center', bbox_to_anchor=(0.5,-0.1))
+		plt.xlabel("time(m)")
+		plt.ylabel("State")
+		plt.savefig('../sims/' + str(simNumName) + '/graphs/state/'  + str(self.name) + ".png", bbox_inches='tight')
+		plt.clf()
 
+	def changeState(self, newState):
+		self.state = self.states[newState]		
+
+	def appendState(self):
+
+		self.stateGraphList.append(self.state)
 
 
 

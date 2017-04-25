@@ -50,7 +50,7 @@ class Simulation(object):
 
 		self.numOilTrucks = []
 		for i in range(numOilTrucks):
-			self.numOilTrucks.append(Oiltruck.Oiltruck(30,40,'Oil '+str(i + 1)))
+			self.numOilTrucks.append(Oiltruck.Oiltruck(30,40,'Distributor_'+str(i + 1)))
 
 		self.pickup = Pickup.Pickup(3,6, 'Pickup')
 		self.ironwolf = Ironwolf.Ironwolf(10,30, 'Ironwolf')
@@ -104,6 +104,18 @@ class Simulation(object):
 		self.chipper.genUtilGraphs(simName)
 		self.rtr.genUtilGraphs(simName)
 
+		########################
+
+		# self.pickup.genStateGraphs(simName,self.timePoints)
+		# self.grader.genStateGraphs(simName,self.timePoints)
+		# self.ironwolf.genStateGraphs(simName,self.timePoints)
+
+		# for i in self.numOilTrucks:
+		# 	i.genStateGraphs(simName,self.timePoints)
+
+		# self.chipper.genStateGraphs(simName,self.timePoints)
+		# self.rtr.genStateGraphs(simName,self.timePoints)
+
 	def incrementUtil(self, simClock):
 
 		self.pickup.genUtilTime(simClock)
@@ -118,10 +130,8 @@ class Simulation(object):
 
 	def startSim(self, simName):
 
-		# print(self.arrivalTimes) # Testing times, functions correctly. 
 		myIter = 0 
 		
-
 		while self.road.getCompletedPatches() != self.road.getNumPatches():
 
 			self.vehicleStartWork()
@@ -135,25 +145,30 @@ class Simulation(object):
 
 			print(self.road.getCompletedPatches())
 
-
 			time.sleep(.0001)
 			self.simClock += 1
+			self.timePoints.append(self.simClock)
 			self.incrementUtil(self.simClock)
 
-			directory = '../graphs/'
-			
-		if not os.path.exists(directory + simName):
-			os.makedirs(directory + simName)
-			os.makedirs(directory + simName + '/util/')
-			os.makedirs(directory + simName + '/state/')
+		
+		directory = '../sims/' + simName + '/graphs'
+		
 
-		print(self.simClock, "Total Time")
+		if not os.path.exists(directory + simName):
+			os.makedirs(directory + '/util/')
+			os.makedirs(directory + '/state/')
+
+		print(self.simClock, "Total Time (minutes)")
 		self.genGraphs(simName)
 
 
 
 s = Simulation(5000000, 100, 3, 1)
-s.startSim("Test")
+s.startSim("Test_Sim")
+
+s = Simulation(5000000, 200, 3, 1)
+s.startSim("Test_Sim2")
+
 
 
 

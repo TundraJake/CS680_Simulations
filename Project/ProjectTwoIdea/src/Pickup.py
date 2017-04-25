@@ -30,24 +30,39 @@ class Pickup(Vehicle.Vehicle):
 			self.toggleBusy()
 			self.currentWorkTime = rand.randint(self.minTime, self.maxTime)
 			self.patchWorkTimes.append(self.currentWorkTime)
+			self.state = 1
 			
 
 	def work(self):
 		if (self.currentWorkTime != 0):
-			# print("Pickup working")
-			self.currentWorkTime -= 1
-			self.utilTime += 1
-			return 1
+
+			if (self.state == self.states['Mobing']):
+				self.changeState('Marking')
+				self.appendState()
+				self.currentWorkTime -= 1
+				self.utilTime += 1
+				# Needs a call move function. 
+
+
+			
+			elif(self.state == self.states['Marking']):
+				self.appendState()
+				self.currentWorkTime -= 1
+				self.utilTime += 1
+
+
+			# # print("Pickup working")
+			# self.currentWorkTime -= 1
+			# self.utilTime += 1
+			
+
 			
 		elif (self.currentWorkTime == 0 and self.busy): 
 			self.toggleBusy()
 			self.moveToNextPatch()
 			self.patch.incrementState()
-			return 0 
+			self.appendState()
+
 
 		else:
-			return 0
-
-
-	def changeState(self, newState):
-		self.state = self.states[newState]
+			self.appendState()
