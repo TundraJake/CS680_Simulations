@@ -137,13 +137,13 @@ class Simulation(object):
 			self.vehicleStartWork()
 			self.checkWork()
 
-			print(self.road.patches[0].getState(), " patch 1")
-			print(self.road.patches[1].getState(), " patch 2")
-			print(self.road.patches[2].getState(), " patch 3")
-			print(self.road.patches[3].getState(), " patch 4")
-			print(self.road.patches[4].getState(), " patch 5")
+			# print(self.road.patches[0].getState(), " patch 1")
+			# print(self.road.patches[1].getState(), " patch 2")
+			# print(self.road.patches[2].getState(), " patch 3")
+			# print(self.road.patches[3].getState(), " patch 4")
+			# print(self.road.patches[4].getState(), " patch 5")
 
-			print(self.road.getCompletedPatches())
+			# print(self.road.getCompletedPatches())
 
 			time.sleep(.0001)
 			self.simClock += 1
@@ -151,12 +151,12 @@ class Simulation(object):
 			self.incrementUtil(self.simClock)
 
 		
-		directory = '../sims/' + simName + '/graphs'
+		# directory = '../sims/' + simName + '/graphs'
 		
 
-		if not os.path.exists(directory + simName):
-			os.makedirs(directory + '/util/')
-			os.makedirs(directory + '/state/')
+		# if not os.path.exists(directory + simName):
+		# 	os.makedirs(directory + '/util/')
+		# 	os.makedirs(directory + '/state/')
 
 		print(self.simClock, "Total Time (minutes)")
 		self.genGraphs(simName)
