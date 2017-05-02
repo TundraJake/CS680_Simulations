@@ -14,7 +14,7 @@ class Patch(object):
 		self.end = start + length
 		self.area = self.width * self.length
 		self.state = 0
-		self.requiredOil = math.floor(0.15 * self.area)
+		self.requiredOil = math.floor(0.09 * self.area)
 		self.states = {
 					
 					0:'Damaged',

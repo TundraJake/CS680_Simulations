@@ -138,11 +138,13 @@ class Simulation(object):
 			self.vehicleStartWork()
 			self.checkWork()
 
-			print(self.road.patches[0].getState(), " patch 1")
-			print(self.road.patches[1].getState(), " patch 2")
-			print(self.road.patches[2].getState(), " patch 3")
-			print(self.road.patches[3].getState(), " patch 4")
-			print(self.road.patches[4].getState(), " patch 5")
+			print(self.road.getCompletedPatches() )
+			# print(self.simClock)
+			# print(self.road.patches[0].getState(), " patch 1")
+			# print(self.road.patches[1].getState(), " patch 2")
+			# print(self.road.patches[2].getState(), " patch 3")
+			# print(self.road.patches[3].getState(), " patch 4")
+			# print(self.road.patches[4].getState(), " patch 5")
 
 			# print(self.road.getCompletedPatches())
 
@@ -161,6 +163,7 @@ class Simulation(object):
 
 		print(self.simClock, "Total Time (minutes)")
 		self.genGraphs(simName)
+		print(self.numOilTrucks[0].totalGallonsSprayed, 'fuck you')
 
 
 
