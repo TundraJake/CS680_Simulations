@@ -3,6 +3,7 @@ Jacob McKenna
 UAF CS680 Advanced Discrete Event Simulation 
 Class: Ironwolf
 '''
+
 import Vehicle
 import random as rand
 
@@ -25,26 +26,46 @@ class Ironwolf(Vehicle.Vehicle):
 		self.patch = road.getPatch(self.currentPatch)
 
 		if (self.currentWorkTime == 0 and not self.busy and self.patch.getState() == 'Marked'):
-			# print("Pickup work")
+
 			self.toggleBusy()
 			self.currentWorkTime = rand.randint(self.minTime, self.maxTime)
 			self.patchWorkTimes.append(self.currentWorkTime)
-			self.work()
+			self.state = 1
+
 
 	def work(self):
 		if (self.currentWorkTime != 0):
-			# print("iron wolf working")
-			self.currentWorkTime -= 1
-			self.utilTime += 1
-			return 1
+
+			if (self.state == self.states['Mobing']):
+				self.changeState('Grinding')
+				self.currentWorkTime -= 1
+				self.utilTime += 1
+				# Needs a call move function. 
 			
-		elif (self.currentWorkTime == 0 and self.busy): 
-			# print("Finished Serving, not busy anymore for %s." %(self.ID))
-			self.toggleBusy() # Not busy anymore.
+			elif(self.state == self.states['Grinding']):
+				self.currentWorkTime -= 1
+				self.utilTime += 1
+
+			self.appendState()
+
+		elif (self.currentWorkTime == 0 and self.busy and self.currentPatch == self.totalPatches): 
+
+			self.toggleBusy()
+
 			self.moveToNextPatch()
 			self.patch.incrementState()
-			return 0 
+			self.changeState('Parked')
+			self.appendState()
 			
+		elif (self.currentWorkTime == 0 and self.busy): 
+
+			self.toggleBusy()
+
+			self.moveToNextPatch()
+			self.patch.incrementState()
+			self.changeState('Mobing')
+			self.appendState()
+
+
 		else:
-			return 0
-	
+			self.appendState()

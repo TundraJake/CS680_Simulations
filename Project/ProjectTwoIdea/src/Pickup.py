@@ -19,6 +19,7 @@ class Pickup(Vehicle.Vehicle):
 
 				}
 
+
 	def startWork(self, road):
 
 		self.road = road
@@ -38,29 +39,32 @@ class Pickup(Vehicle.Vehicle):
 
 			if (self.state == self.states['Mobing']):
 				self.changeState('Marking')
-				self.appendState()
 				self.currentWorkTime -= 1
 				self.utilTime += 1
 				# Needs a call move function. 
-
-
 			
 			elif(self.state == self.states['Marking']):
-				self.appendState()
 				self.currentWorkTime -= 1
 				self.utilTime += 1
 
+			self.appendState()
 
-			# # print("Pickup working")
-			# self.currentWorkTime -= 1
-			# self.utilTime += 1
-			
+		elif (self.currentWorkTime == 0 and self.busy and self.currentPatch == self.totalPatches): 
 
-			
-		elif (self.currentWorkTime == 0 and self.busy): 
 			self.toggleBusy()
+
 			self.moveToNextPatch()
 			self.patch.incrementState()
+			self.changeState('Parked')
+			self.appendState()
+			
+		elif (self.currentWorkTime == 0 and self.busy): 
+
+			self.toggleBusy()
+
+			self.moveToNextPatch()
+			self.patch.incrementState()
+			self.changeState('Mobing')
 			self.appendState()
 
 

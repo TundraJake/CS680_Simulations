@@ -3,6 +3,7 @@ Jacob McKenna
 UAF CS680 Advanced Discrete Event Simulation 
 Class: Patch
 '''
+import math
 
 class Patch(object):
 
@@ -13,6 +14,7 @@ class Patch(object):
 		self.end = start + length
 		self.area = self.width * self.length
 		self.state = 0
+		self.requiredOil = math.floor(1.25 * self.area)
 		self.states = {
 					
 					0:'Damaged',

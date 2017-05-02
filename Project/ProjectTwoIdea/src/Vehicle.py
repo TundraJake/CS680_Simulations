@@ -69,12 +69,11 @@ class Vehicle(object):
 		self.utilGraphList.append(holder)
 
 
-
 	def genStateGraphs(self, simNumName, xpoints):
-		
+
 		plt.step(xpoints, self.stateGraphList)
 		# plt.xlim([0, math.ceil( len (self.stateGraphList / 1000) * 1000 )])
-		plt.xlim([0,300])
+		plt.xlim([0,100])
 		plt.title(self.name + ' Utilization Graph')
 		# l1 = plt.axvline(x=self.opens, color='b', label='PRE CLOSE (7.5 hrs)')
 		# l2 = plt.axvline(x=self.closes, color='r', label='CLOSED (8 hrs)')

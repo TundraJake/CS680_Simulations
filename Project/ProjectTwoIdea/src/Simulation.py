@@ -106,15 +106,15 @@ class Simulation(object):
 
 		########################
 
-		# self.pickup.genStateGraphs(simName,self.timePoints)
-		# self.grader.genStateGraphs(simName,self.timePoints)
-		# self.ironwolf.genStateGraphs(simName,self.timePoints)
+		self.pickup.genStateGraphs(simName,self.timePoints)
+		self.grader.genStateGraphs(simName,self.timePoints)
+		self.ironwolf.genStateGraphs(simName,self.timePoints)
 
-		# for i in self.numOilTrucks:
-		# 	i.genStateGraphs(simName,self.timePoints)
+		for i in self.numOilTrucks:
+			i.genStateGraphs(simName,self.timePoints)
 
-		# self.chipper.genStateGraphs(simName,self.timePoints)
-		# self.rtr.genStateGraphs(simName,self.timePoints)
+		self.chipper.genStateGraphs(simName,self.timePoints)
+		self.rtr.genStateGraphs(simName,self.timePoints)
 
 	def incrementUtil(self, simClock):
 
