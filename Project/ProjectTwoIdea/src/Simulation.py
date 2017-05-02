@@ -29,11 +29,7 @@ import Dumptruck
 
 # Stockpile 
 import Stockpile
-import Oiltanker
 
-### Clock code from following link, 
-### http://codereview.stackexchange.com/questions/26534/is-there-a-better-way-to-count-seconds-in-python
-###
 class Simulation(object):
 
 	def __init__(self, budget, patches, numDumpTrucks, numOilTrucks):
@@ -41,6 +37,9 @@ class Simulation(object):
 		self.simClock = 0
 		self.budget = budget
 		self.timePoints = []
+
+		###### Cubic Feet, Gallons, int Location ######
+		self.stockpile = Stockpile.Stockpile(200, 10000, 0)
 
 		self.road = Road.Road(patches)
 
@@ -50,7 +49,7 @@ class Simulation(object):
 
 		self.numOilTrucks = []
 		for i in range(numOilTrucks):
-			self.numOilTrucks.append(Oiltruck.Oiltruck(30,40,'Distributor_'+str(i + 1)))
+			self.numOilTrucks.append(Oiltruck.Oiltruck(30,40,'Distributor_'+str(i + 1), self.stockpile))
 
 		self.pickup = Pickup.Pickup(3,6, 'Pickup')
 		self.ironwolf = Ironwolf.Ironwolf(10,30, 'Ironwolf')
@@ -58,7 +57,9 @@ class Simulation(object):
 		self.chipper = Chipper.Chipper(30,40, 'Chipper')
 		self.rtr = RubberTireRoller.RubberTireRoller(15,30, 'RTR')
 
-		self.stockpile = Stockpile.Stockpile(1300, 0)
+
+
+
 
 	def vehicleStartWork(self):
 
@@ -137,11 +138,11 @@ class Simulation(object):
 			self.vehicleStartWork()
 			self.checkWork()
 
-			# print(self.road.patches[0].getState(), " patch 1")
-			# print(self.road.patches[1].getState(), " patch 2")
-			# print(self.road.patches[2].getState(), " patch 3")
-			# print(self.road.patches[3].getState(), " patch 4")
-			# print(self.road.patches[4].getState(), " patch 5")
+			print(self.road.patches[0].getState(), " patch 1")
+			print(self.road.patches[1].getState(), " patch 2")
+			print(self.road.patches[2].getState(), " patch 3")
+			print(self.road.patches[3].getState(), " patch 4")
+			print(self.road.patches[4].getState(), " patch 5")
 
 			# print(self.road.getCompletedPatches())
 
@@ -166,8 +167,8 @@ class Simulation(object):
 s = Simulation(5000000, 100, 3, 1)
 s.startSim("Test_Sim")
 
-s = Simulation(5000000, 200, 3, 1)
-s.startSim("Test_Sim2")
+# s = Simulation(5000000, 200, 3, 1)
+# s.startSim("Test_Sim2")
 
 
 

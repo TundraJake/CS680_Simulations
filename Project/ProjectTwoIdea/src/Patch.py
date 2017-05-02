@@ -14,7 +14,7 @@ class Patch(object):
 		self.end = start + length
 		self.area = self.width * self.length
 		self.state = 0
-		self.requiredOil = math.floor(1.25 * self.area)
+		self.requiredOil = math.floor(0.15 * self.area)
 		self.states = {
 					
 					0:'Damaged',
@@ -51,3 +51,10 @@ class Patch(object):
 	# Debug function
 	def printStartAndEnd(self):
 		print('Start is: ', self.start, ' and end is: ', self.end)
+
+	def printRemainingGallonsToFinish(self):
+		print(self.requiredOil, ' gallons of oil left to cover the patch.')
+
+	def sprayPatch(self, oil):
+		self.requiredOil -= oil
+

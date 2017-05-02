@@ -29,20 +29,46 @@ class RubberTireRoller(Vehicle.Vehicle):
 			self.toggleBusy()
 			self.currentWorkTime = rand.randint(self.minTime, self.maxTime)
 			self.patchWorkTimes.append(self.currentWorkTime)
-			self.work()
+			self.state = 1
 
 	def work(self):
 		if (self.currentWorkTime != 0):
-			# print("RubberTireRoller working")
-			self.currentWorkTime -= 1
-			self.utilTime += 1
-			self.utilTime += 1
-			return 1
+
+			if (self.state == self.states['Mobing']):
+				self.changeState('Rolling')
+				self.currentWorkTime -= 1
+				self.utilTime += 1
+				# Needs a call move function. 
+			
+			elif(self.state == self.states['Rolling']):
+				self.currentWorkTime -= 1
+				self.utilTime += 1
+
+			self.appendState()
 			
 		elif (self.currentWorkTime == 0 and self.busy): 
 
-			self.toggleBusy() # Not busy anymore.
+			self.toggleBusy()
+
 			self.moveToNextPatch()
 			self.patch.incrementState()
 			self.road.incrementCompletedPatches()
-			return 0 
+			self.changeState('Mobing')
+			self.appendState()
+
+		else:
+			self.appendState()
+			
+		
+
+
+
+
+
+
+
+
+
+
+
+
