@@ -82,13 +82,9 @@ class Vehicle(object):
 		plt.savefig('../sims/' + str(simNumName) + '/graphs/state/'  + str(self.name) + ".png", bbox_inches='tight')
 		plt.clf()
 
-
-
 	def changeState(self, newState):
 
 		self.state = self.states[newState]	
-
-
 
 	def appendState(self):
 

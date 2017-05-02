@@ -25,7 +25,7 @@ class RubberTireRoller(Vehicle.Vehicle):
 		self.patch = road.getPatch(self.currentPatch)
 
 		if (self.currentWorkTime == 0 and not self.busy and self.patch.getState() == 'Chipped'):
-			# print("Pickup work")
+
 			self.toggleBusy()
 			self.currentWorkTime = rand.randint(self.minTime, self.maxTime)
 			self.patchWorkTimes.append(self.currentWorkTime)

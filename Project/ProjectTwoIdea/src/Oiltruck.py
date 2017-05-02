@@ -40,7 +40,12 @@ class Oiltruck(Vehicle.Vehicle):
 		self.currentWorkTime -= 1
 		self.utilTime += 1
 		self.oil -= 50
-		self.patch.sprayPatch(50)
+
+		if (self.oil == 0): # 0, empty duh.
+			self.changeState('Mobing')
+
+		else:
+			self.patch.sprayPatch(50)
 
 	def work(self):
 
@@ -53,10 +58,6 @@ class Oiltruck(Vehicle.Vehicle):
 			
 			elif(self.state == self.states['Spraying']):
 				self.spray()
-
-			elif(self.oil == 0): # 0 gallons == empty, duh
-				self.currentWorkTime -= 1
-				self.utilTime += 1
 
 			elif(self.state == self.states['Spraying']):
 				self.currentWorkTime -= 1
