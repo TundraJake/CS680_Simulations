@@ -1,0 +1,7 @@
+Test_sim 
+
+Notes:
+
+This sim represents a single Stockpile at the beginning of the road, and all dump trucks wait with priority who gets to dump first. The trucks in front get priority (truck 1 top prioirty, truck 2 second top priority, etc). This is the first, very stable simulation with patches evenly spread out. Basically, the dump trucks are fighting over who gets to fill the chipper, no queue exists, yet. 
+
+All vehicles start at the beginning of the project regardless if they are immidiately required. 

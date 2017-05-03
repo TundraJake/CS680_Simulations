@@ -30,13 +30,28 @@ class Stockpile(object):
 
 
 
-	def loadDumpTruck(self, truck):
-		self.currentWorkTime = rand.randint(10, 20)
-		truck.load()
+	def loadDumpTruck(self):
+		d1Amount = 2
+		self.d1mat -= d1Amount
 
-	def loadDistributor(self, truck):
-		self.currentWorkTime = rand.randint(10, 20)
-		truck.load()
+		if (self.d1mat <= 0):
+			print('its empty')
+			return 0
+		else:
+			return d1Amount
+
+
+
+
+	def loadDistributor(self):
+		oilAmount = 125
+		self.oilTanker -= oilAmount
+
+		if (self.oilTanker <= 0):
+			print('its empty')
+			return 0
+		else:
+			return oilAmount
 
 
 

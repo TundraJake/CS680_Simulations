@@ -14,7 +14,8 @@ class Patch(object):
 		self.end = start + length
 		self.area = self.width * self.length
 		self.state = 0
-		self.requiredOil = math.floor(0.09 * self.area)
+		self.requiredOil = math.floor(0.0039 * self.area) # gallons convers
+		self.requiredD1 = math.floor(0.002 * self.area) # cubic yards convers
 		self.states = {
 					
 					0:'Damaged',
@@ -36,8 +37,8 @@ class Patch(object):
 	def incrementState(self):
 		self.state += 1
 		
-		if self.getState() == self.states[4]:
-			return "Finished Patch"
+		# if self.getState() == self.states[6]:
+		# 	return "Finished Patch"
 
 	def getArea(self):
 		return self.area
@@ -57,4 +58,22 @@ class Patch(object):
 
 	def sprayPatch(self, oil):
 		self.requiredOil -= oil
+
+		if (self.requiredOil < 0):
+			return 1
+
+		else:
+			return 0
+
+
+
+
+	def chipPatch(self, d1):
+		self.requiredD1 -= d1
+
+		if (self.requiredD1 < 0):
+			return 1
+
+		else:
+			return 0
 

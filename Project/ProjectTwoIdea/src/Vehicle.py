@@ -34,8 +34,10 @@ class Vehicle(object):
 		self.patch = ''
 		self.state = 0
 
-		self.utilDir = ''
-		self.stateDir = ''
+		self.costPerMinute = .57
+
+	def getName(self):
+		return self.name
 
 	def getState(self):
 		return self.state
@@ -52,7 +54,7 @@ class Vehicle(object):
 		
 		plt.plot(self.utilGraphList)
 		plt.ylim([0,1])
-		plt.xlim([0,100])
+		# plt.xlim([0,100])
 		plt.title(self.name + ' Utilization Graph')
 		# l1 = plt.axvline(x=self.opens, color='b', label='PRE CLOSE (7.5 hrs)')
 		# l2 = plt.axvline(x=self.closes, color='r', label='CLOSED (8 hrs)')
@@ -63,7 +65,6 @@ class Vehicle(object):
 		plt.clf()
 
 	def genUtilTime(self, simClock):
-
 		holder = (self.utilTime / simClock)
 		self.utilGraphList.append(holder)
 
@@ -72,7 +73,7 @@ class Vehicle(object):
 
 		plt.step(xpoints, self.stateGraphList)
 		# plt.xlim([0, math.ceil( len (self.stateGraphList / 1000) * 1000 )])
-		plt.xlim([100,200])
+		# plt.xlim([0,800])
 		plt.title(self.name + ' Utilization Graph')
 		# l1 = plt.axvline(x=self.opens, color='b', label='PRE CLOSE (7.5 hrs)')
 		# l2 = plt.axvline(x=self.closes, color='r', label='CLOSED (8 hrs)')

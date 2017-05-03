@@ -10,6 +10,7 @@ class Oiltruck(Vehicle.Vehicle):
 
 	def __init__(self, employeeMinTime, employeeMaxTime, name, stockpile):
 		super().__init__(employeeMinTime, employeeMaxTime, name)
+
 		self.stockpile = stockpile
 		self.totalGallonsSprayed = 0
 		self.oil = 2500 # Gallons, starts full.
@@ -33,24 +34,26 @@ class Oiltruck(Vehicle.Vehicle):
 		self.totalPatches = len(road.patches) - 1
 		self.patch = road.getPatch(self.currentPatch)
 
-		if (self.currentWorkTime == 0 and not self.busy and self.patch.getState() == 'Graded'):
-
+		if (not self.busy and self.patch.getState() == 'Graded'):
+			# Needs a move fuction # self.position = self.patch.
 			self.toggleBusy()
-			self.currentWorkTime = rand.randint(self.minTime, self.maxTime)
+			# self.currentWorkTime = rand.randint(self.minTime, self.maxTime)
 			self.patchWorkTimes.append(self.currentWorkTime)
 			self.state = 1
 
+	def getTotalGallonsSprayed(self):
+		return self.totalGallonsSprayed
 
 	def refillOil(self):
 
 		self.utilTime += 1
-		self.oil += 125
-		print(self.oil, 'the fuck is this')
+		self.oil += self.stockpile.loadDistributor()
 
 		if(self.oil == 2500):
 			self.changeState('Loaded')
 
 	def moveToPit(self):
+
 		self.distanceRemaining -= self.vehicleSpeed
 		if (self.distanceRemaining < 0):
 			self.changeState('Loading')
@@ -58,24 +61,27 @@ class Oiltruck(Vehicle.Vehicle):
 
 	def spray(self):
 
-		self.currentWorkTime -= 1
+		# self.currentWorkTime -= 1
 		self.utilTime += 1
-		oilAmount = 10
+		oilAmount = 20
 		self.oil -= oilAmount
 		self.totalGallonsSprayed += oilAmount
 
 		if (self.oil == 0): # 0, empty duh.
 			self.changeState('Mobing')
 			self.distanceRemaining = self.patch.start - self.position
-			self.moveToPit()
 
 		else:
-			self.patch.sprayPatch(oilAmount)
 
+			if (self.patch.sprayPatch(oilAmount)):
+				self.toggleBusy()
+				self.moveToNextPatch()
+				self.patch.incrementState()
+				self.changeState('Mobing')
 
 	def work(self):
 
-		if (self.currentWorkTime != 0):
+		if (self.busy):
 
 			if (self.state == self.states['Loading']):
 				self.refillOil()
@@ -95,27 +101,9 @@ class Oiltruck(Vehicle.Vehicle):
 
 			elif(self.state == self.states['Loaded']):
 				self.changeState('Mobing')
-				self.currentWorkTime -= 1
+				# self.currentWorkTime -= 1
 				self.utilTime += 1
 
-			self.appendState()
-
-		elif (self.currentWorkTime == 0 and self.busy and self.currentPatch == self.totalPatches): 
-
-			self.toggleBusy()
-
-			self.moveToNextPatch()
-			self.patch.incrementState()
-			self.changeState('Parked')
-			self.appendState()
-			
-		elif (self.currentWorkTime == 0 and self.busy): 
-
-			self.toggleBusy()
-
-			self.moveToNextPatch()
-			self.patch.incrementState()
-			self.changeState('Mobing')
 			self.appendState()
 
 

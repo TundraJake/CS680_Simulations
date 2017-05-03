@@ -39,25 +39,34 @@ class Simulation(object):
 		self.timePoints = []
 
 		###### Cubic Feet, Gallons, int Location ######
-		self.stockpile = Stockpile.Stockpile(200, 10000, 0)
+		self.stockpile = Stockpile.Stockpile(200000, 1000000, 0)
 
 		self.road = Road.Road(patches)
 
+		self.chipper = Chipper.Chipper(30,40, 'Chipper')
+
 		self.numDumpTrucks = []
 		for i in range(numDumpTrucks):
-			self.numDumpTrucks.append(Dumptruck.Dumptruck(10,20,'Dumptruck' + str(i + 1)))
+			self.numDumpTrucks.append(Dumptruck.Dumptruck(10,20,'Dumptruck ' + str(i + 1), self.stockpile, self.chipper))
 
 		self.numOilTrucks = []
 		for i in range(numOilTrucks):
-			self.numOilTrucks.append(Oiltruck.Oiltruck(30,40,'Distributor_'+str(i + 1), self.stockpile))
+			self.numOilTrucks.append(Oiltruck.Oiltruck(30,40,'Distributor '+str(i + 1), self.stockpile))
 
 		self.pickup = Pickup.Pickup(3,6, 'Pickup')
 		self.ironwolf = Ironwolf.Ironwolf(10,30, 'Ironwolf')
 		self.grader = Grader.Grader(40,80, 'Grader')
-		self.chipper = Chipper.Chipper(30,40, 'Chipper')
+
 		self.rtr = RubberTireRoller.RubberTireRoller(15,30, 'RTR')
 
+		self.oilArrivalTime = 0
 
+
+	# def timeUntilRefill(self):
+
+
+
+	# def refillOilTanker(self):
 
 
 
@@ -76,6 +85,10 @@ class Simulation(object):
 			if (not self.numOilTrucks[i].busy):
 				self.numOilTrucks[i].startWork(self.road)
 
+		for i in range(len(self.numDumpTrucks)):
+			if (not self.numDumpTrucks[i].busy):
+				self.numDumpTrucks[i].startWork(self.road)
+
 		if (not self.chipper.busy):
 			self.chipper.startWork(self.road)
 
@@ -90,6 +103,9 @@ class Simulation(object):
 		for i in range(len(self.numOilTrucks)):
 			self.numOilTrucks[i].work()
 
+		for i in range(len(self.numDumpTrucks)):
+			self.numDumpTrucks[i].work()
+
 		self.chipper.work()
 		self.rtr.work()
 	
@@ -100,6 +116,9 @@ class Simulation(object):
 		self.ironwolf.genUtilGraphs(simName)
 
 		for i in self.numOilTrucks:
+			i.genUtilGraphs(simName)
+
+		for i in self.numDumpTrucks:
 			i.genUtilGraphs(simName)
 
 		self.chipper.genUtilGraphs(simName)
@@ -114,20 +133,26 @@ class Simulation(object):
 		for i in self.numOilTrucks:
 			i.genStateGraphs(simName,self.timePoints)
 
+		for i in self.numDumpTrucks:
+			i.genStateGraphs(simName,self.timePoints)
+
 		self.chipper.genStateGraphs(simName,self.timePoints)
 		self.rtr.genStateGraphs(simName,self.timePoints)
 
-	def incrementUtil(self, simClock):
+	def incrementUtil(self):
 
-		self.pickup.genUtilTime(simClock)
-		self.grader.genUtilTime(simClock)
-		self.ironwolf.genUtilTime(simClock)
+		self.pickup.genUtilTime(self.simClock)
+		self.grader.genUtilTime(self.simClock)
+		self.ironwolf.genUtilTime(self.simClock)
 
 		for i in self.numOilTrucks:
-			i.genUtilTime(simClock)
+			i.genUtilTime(self.simClock)
 
-		self.chipper.genUtilTime(simClock)
-		self.rtr.genUtilTime(simClock)
+		for i in self.numDumpTrucks:
+			i.genUtilTime(self.simClock)
+
+		self.chipper.genUtilTime(self.simClock)
+		self.rtr.genUtilTime(self.simClock)
 
 	def startSim(self, simName):
 
@@ -138,7 +163,7 @@ class Simulation(object):
 			self.vehicleStartWork()
 			self.checkWork()
 
-			print(self.road.getCompletedPatches() )
+			# print(self.road.getCompletedPatches() )
 			# print(self.simClock)
 			# print(self.road.patches[0].getState(), " patch 1")
 			# print(self.road.patches[1].getState(), " patch 2")
@@ -151,7 +176,7 @@ class Simulation(object):
 			time.sleep(.0001)
 			self.simClock += 1
 			self.timePoints.append(self.simClock)
-			self.incrementUtil(self.simClock)
+			self.incrementUtil()
 
 		
 		# directory = '../sims/' + simName + '/graphs'
@@ -160,15 +185,22 @@ class Simulation(object):
 		# if not os.path.exists(directory + simName):
 		# 	os.makedirs(directory + '/util/')
 		# 	os.makedirs(directory + '/state/')
+		# 	os.makedirs(directory + '/resources/')
 
 		print(self.simClock, "Total Time (minutes)")
 		self.genGraphs(simName)
-		print(self.numOilTrucks[0].totalGallonsSprayed, 'fuck you')
+		for i in self.numOilTrucks:
+			print(i.getTotalGallonsSprayed(), 'Gallons of Oil Distributed from ' + i.getName())
+
+		for i in self.numDumpTrucks:
+			print(i.getTotalD1Hauled(), 'D1 Hauled ' + i.getName())
+
+		print(self.road.getTotalPatchArea(), ' sqaure feet of patches')
 
 
 
-s = Simulation(5000000, 100, 3, 1)
-s.startSim("Test_Sim")
+s = Simulation(50000000, 100, 4, 1)
+s.startSim("Test_Sim3")
 
 # s = Simulation(5000000, 200, 3, 1)
 # s.startSim("Test_Sim2")
