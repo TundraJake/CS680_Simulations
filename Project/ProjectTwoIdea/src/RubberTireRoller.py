@@ -13,10 +13,13 @@ class RubberTireRoller(Vehicle.Vehicle):
 		self.states = {
 					
 					'Parked':0,
-					'Mobing':1,
+					'Moving':1,
 					'Rolling':2
 				
 				}
+
+		self.vehicleCostPerMinute = 4.5
+		self.employeeCostPerMinute = .37
 
 	def startWork(self, road):
 
@@ -34,7 +37,7 @@ class RubberTireRoller(Vehicle.Vehicle):
 	def work(self):
 		if (self.currentWorkTime != 0):
 
-			if (self.state == self.states['Mobing']):
+			if (self.state == self.states['Moving']):
 				self.changeState('Rolling')
 				self.currentWorkTime -= 1
 				self.utilTime += 1
@@ -53,7 +56,7 @@ class RubberTireRoller(Vehicle.Vehicle):
 			self.moveToNextPatch()
 			self.patch.incrementState()
 			self.road.incrementCompletedPatches()
-			self.changeState('Mobing')
+			self.changeState('Moving')
 			self.appendState()
 
 		else:

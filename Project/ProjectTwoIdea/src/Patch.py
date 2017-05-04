@@ -14,8 +14,8 @@ class Patch(object):
 		self.end = start + length
 		self.area = self.width * self.length
 		self.state = 0
-		self.requiredOil = math.floor(0.0039 * self.area) # gallons convers
-		self.requiredD1 = math.floor(0.002 * self.area) # cubic yards convers
+		self.requiredOil = math.floor(0.016 * self.area) # gallons convers
+		self.requiredD1 = math.floor(0.001 * self.area) # cubic yards convers
 		self.states = {
 					
 					0:'Damaged',

@@ -18,12 +18,15 @@ class Dumptruck(Vehicle.Vehicle):
 		self.states = {
 					
 					'Parked':0,
-					'Mobing':1,
+					'Moving':1,
 					'Loading':2,
 					'Loaded':3, 
 					'Dumping':4
 				
 				}
+
+		self.vehicleCostPerMinute = 1.01
+		self.employeeCostPerMinute = .37 # Apprentice
 
 		self.position = 0
 		self.vehicleSpeed = 50 # fps ~ 40 mph 
@@ -49,8 +52,7 @@ class Dumptruck(Vehicle.Vehicle):
 
 		self.utilTime += 1
 		self.d1 += self.stockpile.loadDumpTruck()
-		print('im reloading', self.d1, self.name)
-		if(self.d1 == 8):
+		if(self.d1 >= 8):
 			self.changeState('Loaded')
 
 
@@ -68,7 +70,7 @@ class Dumptruck(Vehicle.Vehicle):
 
 
 		if (self.d1 == 0): # 0, empty duh.
-			self.changeState('Mobing')
+			self.changeState('Moving')
 			self.distanceRemaining = self.patch.start - self.position
 			self.moveToPit()
 
@@ -85,11 +87,11 @@ class Dumptruck(Vehicle.Vehicle):
 			if (self.state == self.states['Loading']):
 				self.reloadD1()
 
-			elif (self.state == self.states['Mobing'] and self.d1 == 0):
+			elif (self.state == self.states['Moving'] and self.d1 == 0):
 				self.moveToPit()
 				# Needs a call move function. 
 
-			elif (self.state == self.states['Mobing']):
+			elif (self.state == self.states['Moving']):
 				self.changeState('Dumping')
 				self.dumping()
 				# Needs a call move function. 
@@ -99,7 +101,7 @@ class Dumptruck(Vehicle.Vehicle):
 				self.dumping()
 
 			elif(self.state == self.states['Loaded']):
-				self.changeState('Mobing')
+				self.changeState('Moving')
 				# self.currentWorkTime -= 1
 				self.utilTime += 1
 

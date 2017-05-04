@@ -13,10 +13,13 @@ class Grader(Vehicle.Vehicle):
 		self.states = {
 					
 					'Parked':0,
-					'Mobing':1,
+					'Moving':1,
 					'Grading':2
 				
 				}
+
+		self.vehicleCostPerMinute = 1.62
+		self.employeeCostPerMinute = .57
 
 	def startWork(self, road):
 
@@ -32,10 +35,11 @@ class Grader(Vehicle.Vehicle):
 			self.state = 1
 
 
+
 	def work(self):
 		if (self.currentWorkTime != 0):
 
-			if (self.state == self.states['Mobing']):
+			if (self.state == self.states['Moving']):
 				self.changeState('Grading')
 				self.currentWorkTime -= 1
 				self.utilTime += 1
@@ -62,7 +66,7 @@ class Grader(Vehicle.Vehicle):
 
 			self.moveToNextPatch()
 			self.patch.incrementState()
-			self.changeState('Mobing')
+			self.changeState('Moving')
 			self.appendState()
 
 

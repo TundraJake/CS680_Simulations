@@ -17,10 +17,13 @@ class Chipper(Vehicle.Vehicle):
 		self.states = {
 					
 					'Parked':0,
-					'Mobing':1,
+					'Moving':1,
 					'Chipping':2
 				
 				}
+
+		self.vehicleCostPerMinute = 1.45
+		self.employeeCostPerMinute = 2 *.57
 
 	def startWork(self, road):
 
@@ -46,7 +49,6 @@ class Chipper(Vehicle.Vehicle):
 
 		if(self.d1InBin == 0):
 			self.changeState('Parked')
-			print('empty bin')
 
 		else:
 			self.utilTime += 1
@@ -60,12 +62,12 @@ class Chipper(Vehicle.Vehicle):
 				self.toggleBusy()
 				self.moveToNextPatch()
 				self.patch.incrementState()
-				self.changeState('Mobing')
+				self.changeState('Moving')
 
 	def work(self):
 		if (self.busy):
 
-			if (self.state == self.states['Mobing']):
+			if (self.state == self.states['Moving']):
 
 				self.changeState('Chipping')
 				self.chip()

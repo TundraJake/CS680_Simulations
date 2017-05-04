@@ -44,7 +44,7 @@ class Road(object):
 
 
 	def getTotalPatchArea(self):
-		return str(self.totalArea) + " Sqaure Feet"
+		return str(self.totalArea)
 
 	def getPatch(self, currentPatch):
 		return self.patches[currentPatch]

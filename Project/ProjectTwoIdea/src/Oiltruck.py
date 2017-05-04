@@ -17,12 +17,15 @@ class Oiltruck(Vehicle.Vehicle):
 		self.states = {
 					
 					'Parked':0,
-					'Mobing':1,
+					'Moving':1,
 					'Loading':2,
 					'Loaded':3,
 					'Spraying':4
 				
 				}
+
+		self.vehicleCostPerMinute = 1.72
+		self.employeeCostPerMinute = 0.62 # Apprentice
 
 		self.position = 0
 		self.vehicleSpeed = 30 # mph 
@@ -63,12 +66,12 @@ class Oiltruck(Vehicle.Vehicle):
 
 		# self.currentWorkTime -= 1
 		self.utilTime += 1
-		oilAmount = 20
+		oilAmount = 50
 		self.oil -= oilAmount
 		self.totalGallonsSprayed += oilAmount
 
 		if (self.oil == 0): # 0, empty duh.
-			self.changeState('Mobing')
+			self.changeState('Moving')
 			self.distanceRemaining = self.patch.start - self.position
 
 		else:
@@ -77,7 +80,7 @@ class Oiltruck(Vehicle.Vehicle):
 				self.toggleBusy()
 				self.moveToNextPatch()
 				self.patch.incrementState()
-				self.changeState('Mobing')
+				self.changeState('Moving')
 
 	def work(self):
 
@@ -86,11 +89,11 @@ class Oiltruck(Vehicle.Vehicle):
 			if (self.state == self.states['Loading']):
 				self.refillOil()
 
-			elif (self.state == self.states['Mobing'] and self.oil == 0):
+			elif (self.state == self.states['Moving'] and self.oil == 0):
 				self.moveToPit()
 				# Needs a call move function. 
 
-			elif (self.state == self.states['Mobing']):
+			elif (self.state == self.states['Moving']):
 				self.changeState('Spraying')
 				self.spray()
 				# Needs a call move function. 
@@ -100,7 +103,7 @@ class Oiltruck(Vehicle.Vehicle):
 				self.spray()
 
 			elif(self.state == self.states['Loaded']):
-				self.changeState('Mobing')
+				self.changeState('Moving')
 				# self.currentWorkTime -= 1
 				self.utilTime += 1
 

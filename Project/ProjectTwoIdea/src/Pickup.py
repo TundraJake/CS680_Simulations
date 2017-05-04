@@ -14,11 +14,13 @@ class Pickup(Vehicle.Vehicle):
 		self.states = {
 					
 					'Parked':0,
-					'Mobing':1,
-					'Marking':2
+					'Moving':1,
+					'Marking':2,
+					'Fueling':3
 
 				}
-
+		self.vehicleCostPerMinute = 0.61
+		self.employeeCostPerMinute = .37
 
 	def startWork(self, road):
 
@@ -37,7 +39,7 @@ class Pickup(Vehicle.Vehicle):
 	def work(self):
 		if (self.currentWorkTime != 0):
 
-			if (self.state == self.states['Mobing']):
+			if (self.state == self.states['Moving']):
 				self.changeState('Marking')
 				self.currentWorkTime -= 1
 				self.utilTime += 1
@@ -53,9 +55,8 @@ class Pickup(Vehicle.Vehicle):
 
 			self.toggleBusy()
 
-			self.moveToNextPatch()
 			self.patch.incrementState()
-			self.changeState('Parked')
+			self.changeState('Fueling')
 			self.appendState()
 			
 		elif (self.currentWorkTime == 0 and self.busy): 
@@ -64,9 +65,31 @@ class Pickup(Vehicle.Vehicle):
 
 			self.moveToNextPatch()
 			self.patch.incrementState()
-			self.changeState('Mobing')
+			self.changeState('Moving')
 			self.appendState()
 
 
 		else:
 			self.appendState()
+
+	# def genUtilStats(self):
+	# 	Parked = 0
+	# 	Moving = 0
+	# 	Marking = 0
+	# 	Fueling = 0
+
+	# 	for i in self.totalStateGraphList:
+
+	# 		if (i == 0):
+	# 			Parked += 1
+	# 		elif (i == 1):
+	# 			Moving += 1
+	# 		elif (i == 2):
+	# 			Marking += 1
+	# 		elif (i == 3):
+	# 			Fueling += 1
+
+	# 	print(Parked, Moving  , Marking, Fueling,)
+
+
+
